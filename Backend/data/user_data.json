@@ -1,7 +1,12 @@
 {
-  "1": {
-    "id": 1,
-    "username": "h3rhex",
-    "password": "12345"
-  }
+    "1": {
+        "password": "12345",
+        "id": 1,
+        "username": "h3rhex"
+    },
+    "2": {
+        "password": "1234",
+        "id": 2,
+        "username": "1aalexiss8"
+    }
 }

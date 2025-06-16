@@ -33,7 +33,7 @@ function sendFormRegister(e) {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    fetch("/user_register", {
+    fetch("/user_registration", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -66,15 +66,13 @@ function checkUsernameAvailability(e) {
         },
         body: JSON.stringify({ username: username })
     })
-        .then((response) => {
-            if (response.ok) {
-                return response.text(); // ← Aquí sí leemos el contenido JSON
+        .then(response => response.text())
+        .then(text => {
+            if (text.includes("Username disponible")) {
+                sendFormRegister(event);
             } else {
-                throw new Error("Error al verificar el nombre de usuario");
+                alert("❌ Nombre de usuario no disponible");
             }
-        })
-        .then((message) => {
-            alert(message);
         })
         .catch((err) => {
             alert(err.message);

@@ -1,9 +1,11 @@
 package com.h3rhex.GymTracker.Controllers;
 
+import com.h3rhex.GymTracker.DTOs.RegisterDTO;
 import com.h3rhex.GymTracker.DTOs.UsernameDTO;
 import com.h3rhex.GymTracker.DTOs.LoginDTO;
 import com.h3rhex.GymTracker.Models.User;
 import com.h3rhex.GymTracker.Services.ReadUserData;
+import com.h3rhex.GymTracker.Services.WriteUserData;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +17,7 @@ import java.sql.Struct;
 @RestController
 public class UserLoginController {
     private final ReadUserData readUserData = new ReadUserData();
+    private final WriteUserData writeUserData = new WriteUserData();
 
     /*
        Captura la petition POST con ENDPOINT (/user_login) este método se encarga de gestionar esta llamada
@@ -39,6 +42,34 @@ public class UserLoginController {
         } else {
             System.out.println("❌ Login fallido. Credenciales inválidas para usuario: " + username);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
+        }
+    }
+
+    /*
+        Captura la petition POST con ENDPOINTS (/user_registration) este método se encarga
+        de gestionar la llamada con los datos previamente validados tanto en el servidor como en
+        el formulario respectivamente, y llama al método writeUserData, createNewUser con las credenciales
+        para escribir los datos en el json de usuarios
+    */
+
+    @PostMapping("/user_registration")
+    public ResponseEntity<String> registUser(@RequestBody RegisterDTO registerDTO){
+        String username = registerDTO.getUsername();
+        String password = registerDTO.getPassword();
+
+        System.out.println("🔐 Solicitud de registro recibida:");
+        System.out.println("➡️  Username: " + username);
+        System.out.println("➡️  Password: " + password);
+
+        User user = writeUserData.createNewUser(username, password);
+
+        if (user != null) {
+            System.out.println("✅ Registro exitoso para el usuario: " + username);
+            return ResponseEntity.ok("Usuario registrado correctamente");
+
+        } else {
+            System.out.println("❌ Error al registrar usuario: " + username);
+            return ResponseEntity.badRequest().body("Error creando el usuario");
         }
     }
 

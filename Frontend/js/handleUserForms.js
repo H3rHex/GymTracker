@@ -33,7 +33,7 @@ function sendFormRegister(e) {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    fetch("/user_register", {
+    fetch("/user_registration", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

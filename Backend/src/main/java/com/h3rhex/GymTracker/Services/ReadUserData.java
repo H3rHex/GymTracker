@@ -35,7 +35,7 @@ public class ReadUserData {
         } catch (Exception e){
             System.err.println("❌ Error leyendo el archivo: " + e.getMessage());
         }
-        return null; // Para cerrar el archivo
+        return null;
     }
 
     public boolean doesUsernameExist(String username) {
