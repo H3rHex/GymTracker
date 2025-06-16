@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="180"
+   height="180"
+   viewBox="0 0 180 180"
+   version="1.1"
+   id="svg1"
+   inkscape:export-filename="../images/favicon-ligth.webp"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   inkscape:version="1.4.2 (1:1.4.2+202505120737+ebf0e940d0)"
+   sodipodi:docname="favicon-ligth.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showguides="true"
+     inkscape:zoom="5.6568542"
+     inkscape:cx="66.556426"
+     inkscape:cy="128.07472"
+     inkscape:window-width="2560"
+     inkscape:window-height="1375"
+     inkscape:window-x="0"
+     inkscape:window-y="29"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect5"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#1f2937;fill-opacity:1;stroke:#d1d5db;stroke-opacity:1"
+       x="42.536072"
+       y="73.01329"
+       id="text1"
+       inkscape:label="GYM"><tspan
+         id="tspan1"
+         x="42.536072"
+         y="73.01329"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:74.6667px;font-family:'Bebas Neue';-inkscape-font-specification:'Bebas Neue, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#1f2937;fill-opacity:1;stroke:#d1d5db;stroke-opacity:1"
+         sodipodi:role="line">GYM</tspan></text>
+    <rect
+       style="fill:#3b82f6;stroke-width:1;fill-opacity:1;stroke:#d1d5db;stroke-opacity:1;stroke-dasharray:none"
+       id="rect1"
+       width="8.5"
+       height="40"
+       x="25"
+       y="72.5"
+       ry="4.0594058"
+       rx="0"
+       inkscape:label="disk-lf1" />
+    <rect
+       style="fill:#3b82f6;stroke-width:1;fill-opacity:1;stroke:#d1d5db;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2"
+       width="8.5"
+       height="45"
+       x="35"
+       y="70"
+       ry="4.5668316"
+       rx="0"
+       inkscape:label="disk-lf2" />
+    <rect
+       style="fill:#3b82f6;stroke-width:1;fill-opacity:1;stroke:#d1d5db;stroke-opacity:1;stroke-dasharray:none"
+       id="rect3"
+       width="8.5"
+       height="40"
+       x="150"
+       y="72.5"
+       ry="4.0594058"
+       rx="0"
+       inkscape:label="disk-rg1" />
+    <rect
+       style="fill:#3b82f6;stroke-width:1;fill-opacity:1;stroke:#d1d5db;stroke-opacity:1;stroke-dasharray:none"
+       id="rect4"
+       width="8.5"
+       height="45"
+       x="140"
+       y="70"
+       ry="4.5668316"
+       rx="0"
+       inkscape:label="disk-rg2" />
+    <path
+       style="fill:#3b82f6;fill-opacity:1;stroke:#d1d5db;stroke-width:1;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5"
+       width="90"
+       height="5"
+       x="47"
+       y="90"
+       inkscape:path-effect="#path-effect5"
+       sodipodi:type="rect"
+       d="m 47,90 h 90 v 5 H 47 Z"
+       inkscape:label="barra" />
+    <text
+       xml:space="preserve"
+       style="font-size:13.0495px;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#4b5563;fill-opacity:1;stroke:#d1d5db;stroke-width:1.00985;stroke-dasharray:none;stroke-opacity:1"
+       x="44.969822"
+       y="135.49809"
+       id="text5"
+       inkscape:label="TRACKER"
+       transform="scale(1.0025899,0.9974168)"><tspan
+         id="tspan5"
+         x="44.969822"
+         y="135.49809"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:34.7986px;font-family:'Bebas Neue';-inkscape-font-specification:'Bebas Neue, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#4b5563;fill-opacity:1;stroke:#d1d5db;stroke-width:1.00985;stroke-dasharray:none;stroke-opacity:1"
+         sodipodi:role="line">tracker</tspan></text>
+  </g>
+</svg>

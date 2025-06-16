@@ -1,0 +1,54 @@
+header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 30%;
+
+    background-color: var(--color-bg-card);
+    color: var(--color-text-primary);
+
+    border: 3px solid var(--color-border-divider);
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    margin: 25px;
+    padding: 1rem 2rem;
+}
+
+header .left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+}
+
+header a {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    font-weight: 600;
+
+    background-color: var(--color-button-bg-secondary);
+    color: var(--color-button-text);
+
+    padding: 0.5rem 1rem;
+    margin-inline: 15px;
+
+    border-radius: 10px;
+
+    transition: all 0.2s ease;
+}
+
+header a:hover {
+    background-color: var(--color-button-hover-secondary);
+    color: var(--color-button-text-hover);
+}
+
+#username {
+    max-width: 30%;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    overflow-x: hidden;
+}

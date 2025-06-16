@@ -1,0 +1,109 @@
+function sendForm(e) {
+    e.preventDefault(); // Evita recargar la página
+
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    fetch("/user_login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, password })
+    })
+        .then((response) => {
+            if (response.ok) {
+                localStorage.setItem("username", username);
+                return response.text();
+            } else {
+                throw new Error("Credenciales incorrectas");
+            }
+        })
+        .then((message) => {
+            alert(message); // o puedes usar SweetAlert o Toastify
+        })
+        .catch((err) => {
+            alert(err.message);
+        });
+}
+
+function sendFormRegister(e) {
+    e.preventDefault(); // Evita recargar la página
+
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    fetch("/user_register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, password })
+    })
+        .then((response) => {
+            if (response.ok) {
+                return response.text();
+            } else {
+                throw new Error("Error al registrar el usuario");
+            }
+        })
+        .then((message) => {
+            alert(message); // o puedes usar SweetAlert o Toastify
+        })
+        .catch((err) => {
+            alert(err.message);
+        });
+}
+
+function checkUsernameAvailability(e) {
+    const username = document.getElementById("username").value;
+    let event = e;
+
+    fetch("/check_username", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username: username })
+    })
+        .then((response) => {
+            if (response.ok) {
+                return response.text(); // ← Aquí sí leemos el contenido JSON
+            } else {
+                throw new Error("Error al verificar el nombre de usuario");
+            }
+        })
+        .then((message) => {
+            alert(message);
+        })
+        .catch((err) => {
+            alert(err.message);
+        });
+}
+
+function checkPasswords(e) {
+    e.preventDefault();
+    let event = e;
+
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirm_password").value;
+
+    if (password !== confirmPassword) {
+        alert("Las contraseñas no coinciden");
+        return false;
+    }
+    checkUsernameAvailability(event)
+}
+
+
+function togglePasswordVisibility(buttonElement) {
+    const passwordInput = buttonElement.previousElementSibling;
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        buttonElement.textContent = "👀";
+    } else {
+        passwordInput.type = "password";
+        buttonElement.textContent = "🙈";
+    }
+}

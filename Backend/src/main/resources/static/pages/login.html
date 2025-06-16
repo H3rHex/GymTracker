@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Tracker</title>
+
+    <link rel="icon" type="image/webp" href="/assets/images/favicon-ligth.webp">
+
+    <link rel="stylesheet" href="/css/PAGE_STYLES/login.css">
+    <link rel="stylesheet" href="/css/GLOBAL_STYLES/root.css">
+</head>
+
+<body data-theme="dark">
+    <button id="themeChanger" onclick="changeThemeMode()">
+        Light Mode
+    </button>
+
+    <main id="login-main">
+        <h2>Iniciar Sesión</h2>
+        <span class="logo"></span>
+
+        <!--FORMULARIO LOGIN-->
+        <form id="login-user-form" onsubmit="sendForm(event)">
+            <div>
+                <input id="username" type="text" name="username" placeholder="Nombre de Usuario" required />
+            </div>
+
+            <div>
+                <input id="password" type="password" name="password" placeholder="Contraseña" required />
+                <span id="toggle-show-password" onclick="togglePasswordVisibility()">🙈</span>
+            </div>
+
+            <button class="submitButtons" type="submit">Iniciar Sesión</button>
+        </form>
+
+        <div class="card">
+            <h2>¿Aún no tienes cuenta?</h2>
+            <p>Únete gratis y empieza a registrar tu progreso en el gym. Visualiza tu evolución y mantente motivado cada
+                día. 💪</p>
+            <a href="/register" class="btn">Registrarse <data value="loginButton"></data></a>
+            <div style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                
+            ">
+                <h4 style="
+                margin-bottom: 10px;
+                ">¿Te has perdido?</h4>
+                <a href="/" class="btn">Pagina Principal</a>
+            </div>
+        </div>
+    </main>
+
+</body>
+
+<!-- Scripts -->
+<script src="/js/handleUserForms.js"></script> <!--Maneja las peticions HTTP de los formularios-->
+<script src="/js/changeThemeMode.js"></script>
+
+</html>
