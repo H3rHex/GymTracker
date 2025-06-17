@@ -30,14 +30,15 @@ public class UserLoginController {
         String username = loginDTO.getUsername();
         String password = loginDTO.getPassword();
 
+       /*
         System.out.println("🔐 Solicitud de login recibida:");
         System.out.println("➡️  Username: " + username);
         System.out.println("➡️  Password: " + password);
-
+        */
         User user = readUserData.findUserByCredentials(username, password);
 
         if (user != null) {
-            System.out.println("✅ Login exitoso para el usuario: " + user.getUsername());
+           // System.out.println("✅ Login exitoso para el usuario: " + user.getUsername());
             return ResponseEntity.ok("Login correcto. Bienvenido " + user.getUsername());
         } else {
             System.out.println("❌ Login fallido. Credenciales inválidas para usuario: " + username);
@@ -57,9 +58,11 @@ public class UserLoginController {
         String username = registerDTO.getUsername();
         String password = registerDTO.getPassword();
 
+        /*
         System.out.println("🔐 Solicitud de registro recibida:");
         System.out.println("➡️  Username: " + username);
         System.out.println("➡️  Password: " + password);
+        */
 
         User user = writeUserData.createNewUser(username, password);
 
@@ -83,8 +86,10 @@ public class UserLoginController {
     public ResponseEntity<?> checkUsername(@RequestBody UsernameDTO usernameDTO) {
         String checkedUsername = usernameDTO.getUsername();
 
+        /*
         System.out.println("🔐 Solicitud de check username recibida:");
         System.out.println("➡️ Username: " + checkedUsername);
+        */
 
         boolean doesUsernameExist = readUserData.doesUsernameExist(checkedUsername);
 

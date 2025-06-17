@@ -13,7 +13,7 @@
 
 </head>
 
-<body data-theme="dark">
+<body data-theme="">
     <button id="themeChanger" onclick="changeThemeMode()">
         Light Mode
     </button>
@@ -62,17 +62,40 @@
 
 <!-- Scripts -->
 <script src="/js/changeThemeMode.js"></script>
-
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const username = localStorage.getItem('username');
-        if (username) {
-            document.getElementById('username').textContent = `Bienvenido, ${username}`;
+    document.addEventListener("DOMContentLoaded", () => {
+        if (localStorage.getItem("username") !== null && localStorage.getItem("password") !== null) {
+            checkLogin(); // Llama a la función
         } else {
-            document.getElementById('username').textContent = 'Bienvenido, a GymTracker';
+            console.log("No hay login");
         }
     });
-</script>
 
+    async function checkLogin() {
+        const username = localStorage.getItem("username");
+        const password = localStorage.getItem("password");
+
+        try {
+            const response = await fetch("/user_login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            if (response.status === 200) {
+                // ✅ Redirigir a otra página
+                window.location.href = '/home';
+            } else {
+                const msg = await response.text();
+                throw new Error(msg || "Error en la petición");
+            }
+        } catch (error) {
+            console.error('❌ Error:', error.message);
+            alert(error.message);
+        }
+    }
+</script>
 
 </html>

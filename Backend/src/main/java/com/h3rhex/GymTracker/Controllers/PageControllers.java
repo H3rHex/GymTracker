@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class PageControllers {
     @RequestMapping("/")
-    String home() {
+    String index() {
         return "forward:/index.html";
     }
 

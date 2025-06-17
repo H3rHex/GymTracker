@@ -1,17 +1,21 @@
 let activeTheme = 'light';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Check if a theme is saved in localStorage
+    // Primero, si hay un tema guardado en localStorage, úsalo
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
         document.body.setAttribute('data-theme', savedTheme);
         activeTheme = savedTheme;
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // Si no hay guardado, consulta la preferencia del navegador
+        document.body.setAttribute('data-theme', 'dark');
+        activeTheme = 'dark';
     } else {
-        // Default to light theme if no theme is saved
+        // Por defecto, light
         document.body.setAttribute('data-theme', 'light');
+        activeTheme = 'light';
     }
 
-    // Update the button text based on the current theme
     updateButtonText();
 });
 
@@ -27,7 +31,6 @@ function changeThemeMode() {
         activeTheme = 'dark';
     }
 
-    // Save the current theme to localStorage
     localStorage.setItem('theme', activeTheme);
     updateButtonText();
 }

@@ -2,11 +2,16 @@
     "1": {
         "password": "12345",
         "id": 1,
-        "username": "h3rhex"
+        "username": "user_dev"
     },
     "2": {
-        "password": "1234",
+        "password": "12",
         "id": 2,
         "username": "1aalexiss8"
+    },
+    "3": {
+        "password": "12",
+        "id": 3,
+        "username": "1aalexiss82"
     }
 }

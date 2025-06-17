@@ -21,7 +21,6 @@ header .left {
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-
 }
 
 header a {
@@ -51,4 +50,14 @@ header a:hover {
     font-weight: 600;
     color: var(--color-text-primary);
     overflow-x: hidden;
+}
+
+
+/*/ 1400px Screens Rules /*/
+@media (max-width: 1401px) {
+    header {
+        width: 70%;
+    }
+
+
 }

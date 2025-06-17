@@ -1,3 +1,41 @@
+#profileImage {
+    width: 120px;
+    height: 120px;
+}
+
+#dayMessage {
+    background: var(--color-gradient-primary);
+    background-clip: text;
+    -webkit-background-clip: text;
+    /* Safari */
+    color: transparent;
+    font-style: italic;
+
+    background-size: 300% 100%;
+    /* Más ancho para que se note más */
+    background-repeat: no-repeat;
+
+    animation: backgroundMove 3s ease-in-out infinite;
+    /* Más rápida y con easing */
+}
+
+@keyframes backgroundMove {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    50% {
+        background-position: 100% 0%;
+    }
+
+    100% {
+        background-position: 0% 0%;
+    }
+}
+
+
+/*Header*/
+
 header {
     display: flex;
     flex-direction: row;
@@ -42,14 +80,6 @@ header a {
 header a:hover {
     background-color: var(--color-button-hover-secondary);
     color: var(--color-button-text-hover);
-}
-
-#username {
-    max-width: 30%;
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    overflow-x: hidden;
 }
 
 

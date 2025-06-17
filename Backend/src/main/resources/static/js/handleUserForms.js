@@ -14,6 +14,7 @@ function sendForm(e) {
         .then((response) => {
             if (response.ok) {
                 localStorage.setItem("username", username);
+                localStorage.setItem("password", password);
                 return response.text();
             } else {
                 throw new Error("Credenciales incorrectas");
@@ -42,7 +43,10 @@ function sendFormRegister(e) {
     })
         .then((response) => {
             if (response.ok) {
-                return response.text();
+                localStorage.setItem("username", username);
+                localStorage.setItem("password", password);
+
+                window.location.href = '/home';
             } else {
                 throw new Error("Error al registrar el usuario");
             }
@@ -92,7 +96,31 @@ function checkPasswords(e) {
     }
     checkUsernameAvailability(event)
 }
+// Boton de logeo automatico
+async function buttonLogin_registerPage() {
+    const username = localStorage.getItem("username");
+    const password = localStorage.getItem("password");
 
+    try {
+        const response = await fetch("/user_login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username, password })
+        });
+
+        if (response.status === 200) {
+            // ✅ Redirigir a otra página
+            window.location.href = '/home';
+        } else {
+            throw new Error("Credenciales incorrectas");
+        }
+    } catch (error) {
+        console.error('❌ Error:', error.message);
+        alert(error.message);
+    }
+}
 
 function togglePasswordVisibility(buttonElement) {
     const passwordInput = buttonElement.previousElementSibling;
