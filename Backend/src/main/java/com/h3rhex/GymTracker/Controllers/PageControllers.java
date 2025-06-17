@@ -11,6 +11,9 @@ public class PageControllers {
         return "forward:/index.html";
     }
 
+    @RequestMapping("/home")
+    String home() { return "forward:/pages/logedHome.html"; }
+
     @RequestMapping("/login")
     String loginPage() {
         return "forward:/pages/login.html";
