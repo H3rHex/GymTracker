@@ -3,6 +3,7 @@ package com.h3rhex.GymTracker.Controllers;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class PageControllers {
@@ -11,9 +12,6 @@ public class PageControllers {
         return "forward:/index.html";
     }
 
-    @RequestMapping("/home")
-    String home() { return "forward:/pages/logedHome.html"; }
-
     @RequestMapping("/login")
     String loginPage() {
         return "forward:/pages/login.html";
@@ -21,4 +19,20 @@ public class PageControllers {
 
     @RequestMapping("/register")
     String registerPage() { return "forward:/pages/register.html"; }
+
+    // NEED TO BE LOGGED
+    @RequestMapping("/home")
+    String home() { return "forward:/pages/loggedHome.html"; }
+
+    @RequestMapping("/profile")
+    String profile() { return "forward:/pages/profile.html"; }
+
+    @RequestMapping("/rutinas")
+    @ResponseBody
+    String rutinas() { return "En desarrollo"; }
+
+    @RequestMapping("/progreso")
+    @ResponseBody
+    String progreso() { return "En desarrollo"; }
+
 }

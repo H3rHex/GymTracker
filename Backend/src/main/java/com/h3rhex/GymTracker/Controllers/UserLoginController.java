@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Struct;
-
 @RestController
 public class UserLoginController {
     private final ReadUserData readUserData = new ReadUserData();
@@ -30,11 +28,6 @@ public class UserLoginController {
         String username = loginDTO.getUsername();
         String password = loginDTO.getPassword();
 
-       /*
-        System.out.println("🔐 Solicitud de login recibida:");
-        System.out.println("➡️  Username: " + username);
-        System.out.println("➡️  Password: " + password);
-        */
         User user = readUserData.findUserByCredentials(username, password);
 
         if (user != null) {
@@ -42,6 +35,7 @@ public class UserLoginController {
             return ResponseEntity.ok("Login correcto. Bienvenido " + user.getUsername());
         } else {
             System.out.println("❌ Login fallido. Credenciales inválidas para usuario: " + username);
+            // Estaría bien añadir si el usuario existe o no
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
         }
     }
@@ -57,12 +51,6 @@ public class UserLoginController {
     public ResponseEntity<String> registUser(@RequestBody RegisterDTO registerDTO){
         String username = registerDTO.getUsername();
         String password = registerDTO.getPassword();
-
-        /*
-        System.out.println("🔐 Solicitud de registro recibida:");
-        System.out.println("➡️  Username: " + username);
-        System.out.println("➡️  Password: " + password);
-        */
 
         User user = writeUserData.createNewUser(username, password);
 
@@ -86,15 +74,10 @@ public class UserLoginController {
     public ResponseEntity<?> checkUsername(@RequestBody UsernameDTO usernameDTO) {
         String checkedUsername = usernameDTO.getUsername();
 
-        /*
-        System.out.println("🔐 Solicitud de check username recibida:");
-        System.out.println("➡️ Username: " + checkedUsername);
-        */
-
         boolean doesUsernameExist = readUserData.doesUsernameExist(checkedUsername);
 
         if (!doesUsernameExist) {
-            System.out.println("✅ Nombre de usuario disponible: " + checkedUsername);
+           // System.out.println("✅ Nombre de usuario disponible: " + checkedUsername);
             return ResponseEntity.ok("Username disponible");
         } else {
             System.out.println("❌ Nombre de usuario NO disponible: " + checkedUsername);

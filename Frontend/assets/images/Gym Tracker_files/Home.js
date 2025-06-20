@@ -61,7 +61,7 @@ const motivational_message_list = [
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
-    checkLogin(); // Verica mediante una peticion al servidor que todo este  (por si acaso)
+    // checkLogin(); // Verica mediante una peticion al servidor que todo este  (por si acaso)
     wellcome();
 });
 
@@ -105,11 +105,15 @@ async function checkLogin() {
             body: JSON.stringify({ username, password })
         });
 
-        if (response.status === 200) {
-            return;
-        } else {
+        if (response.status !== 200) {
             // ✅ Redirigir a otra página
             window.location.href = '/';
+        } else if (response.status === 200) {
+            // Todo correcto
+            return 1;
+        } else {
+            const msg = await response.text();
+            throw new Error(msg || "Error en la petición");
         }
     } catch (error) {
         console.error('❌ Error:', error.message);

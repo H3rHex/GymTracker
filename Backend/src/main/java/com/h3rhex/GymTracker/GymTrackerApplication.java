@@ -8,6 +8,6 @@ public class GymTrackerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GymTrackerApplication.class, args);
-		System.out.println("usuario_dev: user_dev, passwd: 12345");
+		//System.out.println("usuario_dev: user_dev, passwd: 12345");
 	}
 }

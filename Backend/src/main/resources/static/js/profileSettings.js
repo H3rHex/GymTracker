@@ -9,43 +9,74 @@ function close_Sesion() {
     }
 }
 
-function delete_account() {
-    if (confirm("Vas a eliminar tu cuenta ¿Estás seguro?")) {
-        let password = null;
-        while (!password) {
-            password = prompt("Por favor, ingresa tu contraseña:");
-            if (password === null) {
-                alert("No se puede eliminar la cuenta sin ingresar la contraseña.");
-                return; // Sale si el usuario cancela el prompt
-            }
-            if (password.trim() === "") {
-                alert("No ingresaste ninguna contraseña.");
-                password = null; // fuerza a que vuelva a pedirla
-            }
+async function delete_account() {
+    if (!confirm("Vas a eliminar tu cuenta y todos tus datos. ¿Estás seguro?")) {
+        console.log("Usuario canceló.");
+        return;
+    }
+
+    const username = localStorage.getItem("username");
+    if (!username) {
+        alert("No se encontró un usuario registrado.");
+        return;
+    }
+
+    let password = null;
+    while (!password) {
+        password = prompt("Por favor, ingresa tu contraseña:");
+        if (password === null) {
+            alert("No se puede continuar sin ingresar la contraseña.");
+            return;
         }
+        if (password.trim() === "") {
+            alert("No ingresaste ninguna contraseña.");
+            password = null;
+        }
+    }
 
-        let username = localStorage.getItem("username");
+    // Verificar credenciales
+    try {
+        const loginRes = await fetch("/user_login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ "username": username, "password": password })
+        });
 
-        fetch("/del_user", {
+        if (!loginRes.ok) {
+            throw new Error("Credenciales incorrectas");
+        }
+    } catch (err) {
+        alert(err.message);
+        return;
+    }
+
+
+    // Confirmación final
+    if (!confirm("Este es el último aviso antes de eliminar tu cuenta. ¿Estás completamente seguro?")) {
+        console.log("Usuario canceló en la segunda confirmación.");
+        return;
+    }
+
+    // Solicitud de eliminación
+    try {
+        const delRes = await fetch("/delete_account", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ username, password })
-        })
-            .then((response) => {
-                if (response.ok) {
-                    alert("Usuario borrado con éxito");
-                } else {
-                    throw new Error("Credenciales incorrectas");
-                }
-            })
-            .catch((err) => {
-                alert(err.message);
-            });
-    } else {
-        // El usuario hizo clic en "Cancelar"
-        console.log("Usuario canceló.");
+            body: JSON.stringify({ username })
+        });
+
+        if (delRes.ok) {
+            alert("✅ Tu cuenta ha sido eliminada.");
+            localStorage.clear();
+            window.location.href = '/';
+        } else {
+            throw new Error("❌ Error al eliminar tu cuenta.");
+        }
+
+    } catch (err) {
+        alert("❌ Ocurrió un error al eliminar tu cuenta: " + err.message);
     }
 }
 
@@ -55,8 +86,8 @@ async function changeUsername() {
         return;
     }
 
-    const username = localStorage.getItem("username");
-    if (!username) {
+    let oldUsername = localStorage.getItem("username");
+    if (!oldUsername) {
         alert("No se encontró un usuario en registrado.");
         return;
     }
@@ -79,15 +110,19 @@ async function changeUsername() {
     try {
         const loginRes = await fetch("/user_login", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password })
-        });
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ "username": oldUsername, "password": password })
+        })
 
         if (!loginRes.ok) {
-            throw new Error("Credenciales incorrectas");
+            alert("❌ Credenciales incorrectas.");
+            return;
         }
+
     } catch (err) {
-        alert(err.message);
+        alert("❌ Error en la verificación: " + err.message);
         return;
     }
 
@@ -112,45 +147,41 @@ async function changeUsername() {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ username: username })
+            body: JSON.stringify({ "username": newUsername })
         })
-            .then(response => response.text())
-            .then(text => {
-                if (text.includes("Username disponible")) {
 
-                } else {
-                    alert("❌ Nombre de usuario no disponible");
-                    changeUsername();
-                }
-            })
-            .catch((err) => {
-                alert(err.message);
-            });
+        const checkText = await abilityRes.text();
+        if (!checkText.includes("Username disponible")) {
+            alert("❌ El nombre de usuario no está disponible.");
+            return;
+        }
 
     } catch (err) {
-        alert(err.message);
+        alert("❌ Error al verificar disponibilidad: " + err.message);
         return;
     }
 
-    // Cambiar nombre usuario
+    // Cambiar nombre de usuario
     try {
         const changeRes = await fetch("/change_username", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username: username, password: password, newUsername: newUsername })
+            body: JSON.stringify({ "oldUsername": oldUsername, "newUsername": newUsername })
         });
 
         if (changeRes.ok) {
-            alert("✅ El nombre de usuario se actualizó correctamente.");
+            alert("✅ Nombre de usuario cambiado correctamente.");
+            localStorage.setItem("username", newUsername);
         } else {
-            throw new Error("Hubo un error al cambiar el nombre de usuario.");
+            throw new Error("❌ Error al cambiar el nombre de usuario.");
         }
+
     } catch (err) {
         alert(err.message);
     }
 }
 
-async function changePass() {
+async function changePassword() {
     if (!confirm("Vas a cambiar el nombre de usuario de tu cuenta. ¿Estás seguro?")) {
         console.log("Usuario canceló.");
         return;
@@ -180,7 +211,7 @@ async function changePass() {
         const loginRes = await fetch("/user_login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ "username": username, "password": password })
         });
 
         if (!loginRes.ok) {
@@ -210,11 +241,12 @@ async function changePass() {
         const changeRes = await fetch("/change_password", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username: username, password: password, newPassword: newPassword })
+            body: JSON.stringify({ "username": username, "newPassword": newPassword })
         });
 
         if (changeRes.ok) {
             alert("Contraseña actualizada correctamente.");
+            localStorage.setItem("password", newPassword);
         } else {
             throw new Error("Hubo un error al cambiar la contraseña.");
         }

@@ -88,8 +88,7 @@
                 // ✅ Redirigir a otra página
                 window.location.href = '/home';
             } else {
-                const msg = await response.text();
-                throw new Error(msg || "Error en la petición");
+                return;
             }
         } catch (error) {
             console.error('❌ Error:', error.message);

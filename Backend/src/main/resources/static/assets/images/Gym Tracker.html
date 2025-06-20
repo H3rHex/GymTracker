@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!-- saved from url=(0040)http://127.0.0.1:3000/pages/profile.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript" src="./Gym Tracker_files/___vscode_livepreview_injected_script"></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Tracker</title>
+
+    <link rel="icon" type="image/webp" href="http://127.0.0.1:3000/assets/images/favicon-ligth.webp">
+
+    <link rel="stylesheet" href="./Gym Tracker_files/root.css">
+    <link rel="stylesheet" href="./Gym Tracker_files/profile.css">
+
+</head>
+
+<body data-theme="dark">
+    <button id="themeChanger" onclick="changeThemeMode()">🌑</button>
+
+
+    <main>
+        <h2><span id="usernameSpan"></span></h2>
+        <img id="profileImage" src="./Gym Tracker_files/defaultProfileImage.webp" alt="profileImage">
+
+        <div class="card" data-type="profileOptionCard">
+            <button onclick="changePassword()">Cambiar contraseña</button>
+            <button onclick="changeUsername()">Cambiar nombre de usuario</button>
+            <button id="closeSesion" onclick="close_Sesion()">Cerrar Sesion</button>
+            <button id="closeSesion" onclick="delete_account()">Eliminar cuenta</button>
+        </div>
+        <div>
+            <a href="http://127.0.0.1:3000/home">Pagina Principal</a>
+        </div>
+
+    </main>
+
+
+
+<script src="./Gym Tracker_files/changeThemeMode.js"></script>
+
+<!-- HOME PAGE MANAGMENT SCRIPTS -->
+<script src="./Gym Tracker_files/Home.js"></script>
+<script src="./Gym Tracker_files/profileSettings.js"></script>
+
+</body><!-- Scripts --></html>

@@ -9,7 +9,7 @@ function sendForm(e) {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ "username": username, "password": password })
     })
         .then((response) => {
             if (response.ok) {
@@ -22,6 +22,7 @@ function sendForm(e) {
         })
         .then((message) => {
             alert(message); // o puedes usar SweetAlert o Toastify
+            window.location.href = '/home';
         })
         .catch((err) => {
             alert(err.message);
@@ -39,7 +40,7 @@ function sendFormRegister(e) {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ "username": username, "password": password })
     })
         .then((response) => {
             if (response.ok) {
@@ -50,9 +51,6 @@ function sendFormRegister(e) {
             } else {
                 throw new Error("Error al registrar el usuario");
             }
-        })
-        .then((message) => {
-            alert(message); // o puedes usar SweetAlert o Toastify
         })
         .catch((err) => {
             alert(err.message);
@@ -68,7 +66,7 @@ function checkUsernameAvailability(e) {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ username: username })
+        body: JSON.stringify({ "username": username })
     })
         .then(response => response.text())
         .then(text => {
@@ -107,7 +105,7 @@ async function buttonLogin_registerPage() {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ "username": username, "password": password })
         });
 
         if (response.status === 200) {
