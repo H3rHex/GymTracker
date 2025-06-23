@@ -1,0 +1,34 @@
+table {
+    text-align: left;
+    letter-spacing: 1px;
+}
+
+td,
+th {
+    padding: 10px;
+    border-radius: 20px;
+}
+
+input {
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.highlited {
+    border: 2px solid var(--color-success-border);
+    background-color: var(--color-success-bg);
+}
+
+button[data-editing="true"] {
+    background-color: var(--color-success-border);
+}
+
+input {
+    background-color: var(--color-button-bg-secondary);
+    color: var(--color-input-text);
+}
+
+.editing {
+    border: 2px solid var(--color-success-border);
+    background-color: var(--color-button-hover-secondary);
+}

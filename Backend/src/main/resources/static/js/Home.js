@@ -62,14 +62,18 @@ const motivational_message_list = [
 
 document.addEventListener("DOMContentLoaded", () => {
     checkLogin(); // Verica mediante una peticion al servidor que todo este  (por si acaso)
-    wellcome();
+    wellcome()
+
 });
 
 function wellcome() {
     if (userNameSpan) {
         userNameSpan.innerHTML = username; // Asigna el valor de username al contenido HTML
     }
-    showMessageWithTypingEffect();
+    if (window.location === ("/home")) {
+        showMessageWithTypingEffect();
+    }
+
 }
 
 function typeWriter(text, i = 0, callback) {

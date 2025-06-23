@@ -1,21 +1,27 @@
 package com.h3rhex.GymTracker.Services;
 
+import com.h3rhex.GymTracker.Config.FileManager;
 import com.h3rhex.GymTracker.Models.User;
-import com.h3rhex.GymTracker.Models.Username;
 import org.json.JSONObject;
 
-import javax.swing.plaf.PanelUI;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
 
 public class ReadUserData {
-    private static final String FILE_PATH = "data/user_data.json";
+    private static final String FILE_PATH = FileManager.UserDataJson();
+    private static  final Path path;
+
+    static {
+        assert FILE_PATH != null;
+        path = Paths.get(FILE_PATH);
+    }
 
     // Buscar usuario y compararlo
     public User findUserByCredentials(String username, String password) {
         try {
-            String content = new String(Files.readAllBytes(Paths.get(FILE_PATH)));
+            String content = new String(Files.readAllBytes(path));
             JSONObject usersJson = new JSONObject(content);
 
             Iterator<String> keys = usersJson.keys();
@@ -40,7 +46,7 @@ public class ReadUserData {
 
     public boolean doesUsernameExist(String username) {
         try {
-            String content = new String(Files.readAllBytes(Paths.get(FILE_PATH)));
+            String content = new String(Files.readAllBytes(path));
             JSONObject usersJson = new JSONObject(content);
 
             Iterator<String> keys = usersJson.keys();

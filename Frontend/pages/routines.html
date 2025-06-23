@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Tracker</title>
+
+    <link rel="icon" type="image/webp" href="/assets/images/favicon-ligth.webp">
+
+    <link rel="stylesheet" href="/css/GLOBAL_STYLES/root.css">
+    <link rel="stylesheet" href="/css/PAGE_STYLES/routines.css">
+
+</head>
+
+<body data-theme="dark">
+    <button id="themeChanger" onclick="changeThemeMode()">
+        Light Mode
+    </button>
+
+    <header>
+        <span class="logo"></span>
+
+        <div class="left">
+            <nav>
+                <a href="/home">Pagina Principal</a>
+                <a href="/profile">Perfil 👤</a>
+                <a href="/progreso">Progreso 📊</a>
+
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="card">
+            <table>
+                <h2>RESUMEN SEMANAL</h2>
+                <thead>
+                    <tr>
+                        <th>Día</th>
+                        <th>Ejercicio Principal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="fila-dia-lunes" class="fila-dia">
+                        <td>Lunes</td>
+                        <td><input type="text" id="lunes" class="ejercicio" disabled></td>
+                    </tr>
+                    <tr id="fila-dia-martes" class="fila-dia">
+                        <td>Martes</td>
+                        <td><input type="text" id="martes" class="ejercicio" disabled></td>
+                    </tr>
+                    <tr id="fila-dia-miercoles" class="fila-dia">
+                        <td>Miércoles</td>
+                        <td><input type="text" id="miercoles" class="ejercicio" disabled></td>
+                    </tr>
+                    <tr id="fila-dia-jueves" class="fila-dia">
+                        <td>Jueves</td>
+                        <td><input type="text" id="jueves" class="ejercicio" disabled></td>
+                    </tr>
+                    <tr id="fila-dia-viernes" class="fila-dia">
+                        <td>Viernes</td>
+                        <td><input type="text" id="viernes" class="ejercicio" disabled></td>
+                    </tr>
+                    <tr id="fila-dia-sabado" class="fila-dia">
+                        <td>Sábado</td>
+                        <td><input type="text" id="sabado" class="ejercicio" disabled></td>
+                    </tr>
+                    <tr id="fila-dia-domingo" class="fila-dia">
+                        <td>Domingo</td>
+                        <td><input type="text" id="domingo" class="ejercicio" disabled></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button onclick="setEditMode(event)" data-editing="false">Editar Calendario</button>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="/js/changeThemeMode.js"></script>
+    <script src="/js/Routine.js"></script>
+
+    <!--z HOME PAGE MANAGMENT SCRIPTS 
+            <script src="/js/Home.js"></script> 
+        -->
+
+</html>

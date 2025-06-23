@@ -1,5 +1,6 @@
 package com.h3rhex.GymTracker;
 
+import com.h3rhex.GymTracker.Config.FileManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,7 +8,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class GymTrackerApplication {
 
 	public static void main(String[] args) {
+		//Iniciar SpringBoot
 		SpringApplication.run(GymTrackerApplication.class, args);
-		//System.out.println("usuario_dev: user_dev, passwd: 12345");
+
+		// Crear carpeta de datos y carpeta de User_Routines
+		FileManager.DataFolder();
+		// Crear user_data.json
+		FileManager.UserDataJson();
+
 	}
 }

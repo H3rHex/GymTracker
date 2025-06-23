@@ -1,17 +1,21 @@
 package com.h3rhex.GymTracker.Services;
 
+import com.h3rhex.GymTracker.Config.FileManager;
 import com.h3rhex.GymTracker.Models.User;
 import org.json.JSONObject;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.io.IOException;
+import java.nio.file.*;
 import java.util.Iterator;
 
 public class WriteUserData {
-    private static final String FILE_PATH = "data/user_data.json";
-    private static  final Path path = Paths.get(FILE_PATH);
+    private static final String FILE_PATH = FileManager.UserDataJson();
+    private static  final Path path;
+
+    static {
+        assert FILE_PATH != null;
+        path = Paths.get(FILE_PATH);
+    }
 
     public User createNewUser(String username, String password){
         try {
@@ -110,6 +114,10 @@ public class WriteUserData {
     }
 
     public boolean deleteAccount(String username){
+        String ROUTINES_PERSONAL_FOLDER = FileManager.UserRoutinesPersonalFolder(username);
+        assert ROUTINES_PERSONAL_FOLDER != null;
+        Path personalPath = Path.of(ROUTINES_PERSONAL_FOLDER);
+
         try {
             // 1 Cargar archivo en memoria y leerlo
             String content = new String(Files.readAllBytes(path));
@@ -128,10 +136,29 @@ public class WriteUserData {
                 }
             }
             Files.write(path, usersJson.toString(4).getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+            try {
+                deleteDirectoryRecursively(personalPath);
+            } catch (Exception e){
+                System.err.println("Error eliminando la cuenta:" + e.getMessage());
+                return false;
+            }
             return true;
         } catch (Exception e){
-            System.err.println("Error cambiando la contraseña:" + e.getMessage());
+            System.err.println("Error eliminando la cuenta:" + e.getMessage());
             return false;
         }
+    }
+
+    private void deleteDirectoryRecursively(Path path) throws IOException {
+        if (Files.notExists(path)) return;
+
+        if (Files.isDirectory(path)) {
+            try (DirectoryStream<Path> entries = Files.newDirectoryStream(path)) {
+                for (Path entry : entries) {
+                    deleteDirectoryRecursively(entry);
+                }
+            }
+        }
+        Files.delete(path);
     }
 }

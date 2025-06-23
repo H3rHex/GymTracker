@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class PageControllers {
@@ -28,8 +29,7 @@ public class PageControllers {
     String profile() { return "forward:/pages/profile.html"; }
 
     @RequestMapping("/rutinas")
-    @ResponseBody
-    String rutinas() { return "En desarrollo"; }
+    String rutinas() { return "forward:/pages/routines.html"; }
 
     @RequestMapping("/progreso")
     @ResponseBody
