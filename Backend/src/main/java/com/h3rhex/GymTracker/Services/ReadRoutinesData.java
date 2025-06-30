@@ -23,4 +23,21 @@ public class ReadRoutinesData {
 
             return Files.readString(calendarPath);
         }
+
+        public String getUserRoutine(String username) throws IllegalAccessException, IOException {
+            if (username == null || username.isBlank()) {
+                throw new IllegalAccessException("Username no puede estar vacío");
+            }
+
+            String personalFolder = FileManager.UserRoutinesPersonalFolder(username);
+
+            if (personalFolder == null) {
+                throw new IOException("No se pudo obtener la carpeta personal del usuario.");
+            }
+
+            Path calendarPath = Paths.get(personalFolder, "routine.json");
+
+            return Files.readString(calendarPath);
+        }
+
 }

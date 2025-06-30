@@ -1,0 +1,119 @@
+{
+    "lunes": {
+        "ejercicios": [
+            {
+                "nombre": "Press Banca",
+                "series": 4,
+                "repeticiones": 10
+            },
+            {
+                "nombre": "Press Inclinado con Mancuernas",
+                "series": 3,
+                "repeticiones": 12
+            },
+            {
+                "nombre": "Aperturas en Máquina",
+                "series": 3,
+                "repeticiones": 15
+            }
+        ]
+    },
+    "martes": {
+        "ejercicios": [
+            {
+                "nombre": "Sentadillas",
+                "series": 4,
+                "repeticiones": 10
+            },
+            {
+                "nombre": "Prensa de Piernas",
+                "series": 3,
+                "repeticiones": 12
+            },
+            {
+                "nombre": "Curl Femoral",
+                "series": 3,
+                "repeticiones": 15
+            }
+        ]
+    },
+    "miercoles": {
+        "ejercicios": [
+            {
+                "nombre": "Dominadas",
+                "series": 4,
+                "repeticiones": 8
+            },
+            {
+                "nombre": "Remo con Barra",
+                "series": 3,
+                "repeticiones": 10
+            },
+            {
+                "nombre": "Jalón al Pecho",
+                "series": 3,
+                "repeticiones": 12
+            }
+        ]
+    },
+    "jueves": {
+        "ejercicios": [
+            {
+                "nombre": "Press Militar",
+                "series": 4,
+                "repeticiones": 10
+            },
+            {
+                "nombre": "Elevaciones Laterales",
+                "series": 3,
+                "repeticiones": 15
+            },
+            {
+                "nombre": "Pájaros Inclinados",
+                "series": 3,
+                "repeticiones": 15
+            }
+        ]
+    },
+    "viernes": {
+        "ejercicios": [
+            {
+                "nombre": "Curl Bíceps con Barra",
+                "series": 3,
+                "repeticiones": 12
+            },
+            {
+                "nombre": "Curl Alterno con Mancuernas",
+                "series": 3,
+                "repeticiones": 12
+            },
+            {
+                "nombre": "Fondos en Paralelas",
+                "series": 3,
+                "repeticiones": 10
+            }
+        ]
+    },
+    "sabado": {
+        "ejercicios": [
+            {
+                "nombre": "Peso Muerto Rumano",
+                "series": 4,
+                "repeticiones": 8
+            },
+            {
+                "nombre": "Zancadas Caminando",
+                "series": 3,
+                "repeticiones": 12
+            },
+            {
+                "nombre": "Abdominales en Banco Inclinado",
+                "series": 4,
+                "repeticiones": 20
+            }
+        ]
+    },
+    "domingo": {
+        "ejercicios": []
+    }
+}

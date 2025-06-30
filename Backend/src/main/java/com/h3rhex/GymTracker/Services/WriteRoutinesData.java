@@ -2,6 +2,7 @@ package com.h3rhex.GymTracker.Services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.h3rhex.GymTracker.Config.FileManager;
+import com.h3rhex.GymTracker.DTOs.RoutineDTO;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,4 +30,20 @@ public class WriteRoutinesData {
 
         Files.writeString(calendarFile, json, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
     }
+    public void saveUserRoutine(String username, RoutineDTO rutina) throws IOException {
+        String folderPath = FileManager.UserRoutinesPersonalFolder(username);
+
+        if (folderPath == null) {
+            throw new IOException("No se pudo obtener la carpeta del usuario");
+        }
+
+        Path routineFile = Paths.get(folderPath, "routine.json");
+
+        // Convertir el mapa a JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rutina);
+
+        Files.writeString(routineFile, json, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+    }
+
 }

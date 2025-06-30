@@ -12,6 +12,8 @@ th {
 input {
     padding: 10px;
     border-radius: 20px;
+    background-color: var(--color-button-bg-secondary);
+    color: var(--color-input-text);
 }
 
 .highlited {
@@ -19,16 +21,168 @@ input {
     background-color: var(--color-success-bg);
 }
 
-button[data-editing="true"] {
-    background-color: var(--color-success-border);
+button {
+    margin: 20px;
 }
 
-input {
-    background-color: var(--color-button-bg-secondary);
-    color: var(--color-input-text);
+button[data-editing="true"] {
+    background-color: var(--color-success-border);
 }
 
 .editing {
     border: 2px solid var(--color-success-border);
     background-color: var(--color-button-hover-secondary);
+}
+
+/* RUTINA */
+
+/* Contenedor principal de la rutina */
+#routineContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    background-color: var(--color-bg-card);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border-divider);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px var(--color-border-divider);
+
+    transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+
+    overflow-x: auto;
+    height: auto;
+    margin: 1rem;
+    padding: 1rem 2rem;
+}
+
+/* Tabla de rutina */
+/* === TABLA DE RUTINA === */
+#tabla-rutina {
+    min-width: 900px;
+    width: 100%;
+    table-layout: fixed;
+    overflow-x: auto;
+}
+
+/* === CABECERA (THEAD) === */
+#tabla-rutina thead th {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    padding: 12px;
+    text-align: center;
+    font-weight: 600;
+    border-bottom: 2px solid var(--color-border-divider);
+    white-space: nowrap;
+}
+
+/* === CUERPO (TBODY) === */
+#tabla-rutina tbody td {
+    vertical-align: top;
+    padding: 10px;
+    text-align: left;
+    overflow-wrap: break-word;
+}
+
+#tabla-rutina tbody h3 {
+    font-size: 1rem;
+}
+
+/* === CONTENEDOR DE EJERCICIO === */
+.container-ejercicio {
+    background-color: var(--color-bg-secondary);
+    /* suave azul */
+    border: 2px solid var(--color-border-divider);
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 8px;
+    transition: background, transform 0.2s ease-in-out;
+    height: auto;
+}
+
+.container-ejercicio:hover {
+    transform: scale(1.02);
+    background-color: var(--color-bg-secondary-hover);
+    z-index: 1000000;
+}
+
+.container-ejercicio textarea {
+    background: transparent;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    resize: none;
+    /* Evita que el usuario cambie el tamaño */
+    font: inherit;
+    color: inherit;
+    width: 100%;
+    /* O auto, según tu diseño */
+    height: auto;
+    /* Puedes ajustar altura mínima */
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+
+/* EDIT BUTTON */
+
+.routine-edit-button {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+
+    font-size: 1.5rem;
+
+    transition: all 0.3s ease-out;
+}
+
+.routine-edit-button:hover {
+    transform: scale(1.2);
+    background-color: transparent;
+    filter: drop-shadow(1px 1px 5px var(--color-button-hover-primary));
+}
+
+.edit-disabled {
+    visibility: hidden;
+    position: absolute;
+}
+
+#addEjerciosBTN[data-editing="true"] {
+    background-color: var(--color-button-bg-primary);
+    cursor: pointer;
+}
+
+#addEjerciosBTN[data-editing="false"] {
+    background-color: var(--color-button-disabled);
+    cursor: not-allowed;
+    opacity: 70%;
+}
+
+.delEjButton {
+    border-radius: 20px;
+    transition: all 0.5s ease;
+}
+
+.delEjButton[data-editing="true"] {
+    background-color: var(--color-error-bg);
+    border: solid 1px var(--color-success-border)
+}
+
+@keyframes desaparecer {
+    0% {
+        position: relative;
+        opacity: 100%;
+    }
+
+    100% {
+        opacity: 0%;
+        position: absolute;
+        visibility: hidden;
+    }
+}
+
+.delEjButton[data-editing="false"] {
+    position: absolute;
+    visibility: hidden;
 }

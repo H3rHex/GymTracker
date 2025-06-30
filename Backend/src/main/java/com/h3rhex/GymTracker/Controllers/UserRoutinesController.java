@@ -1,6 +1,7 @@
 package com.h3rhex.GymTracker.Controllers;
 
 
+import com.h3rhex.GymTracker.DTOs.RoutineDTO;
 import com.h3rhex.GymTracker.DTOs.UsernameDTO;
 import com.h3rhex.GymTracker.Services.ReadRoutinesData;
 import com.h3rhex.GymTracker.Services.WriteRoutinesData;
@@ -51,7 +52,6 @@ public class UserRoutinesController {
             return ResponseEntity.badRequest().body("❌ Username inválido");
         }
 
-
         try {
             writeRoutinesData.saveUserCalendar(username, calendarioActualizado);
             return ResponseEntity.ok("✅ Calendario guardado correctamente");
@@ -59,4 +59,44 @@ public class UserRoutinesController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("❌ Error al guardar el calendario");
         }
     }
+
+    @PostMapping("/get_user_routine")
+    public ResponseEntity<?> getRoutine(@RequestBody UsernameDTO usernameDTO) {
+        String user = usernameDTO.getUsername();
+
+        try {
+            String routine = readRoutinesData.getUserRoutine(user);
+
+            if (!routine.isBlank()) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(routine);
+            } else {
+                return ResponseEntity.noContent().build();
+            }
+
+        } catch (IllegalAccessException e) {
+            System.out.println("Usuario no válido.");
+            return ResponseEntity.badRequest().body("Usuario no válido.");
+        } catch (IOException e) {
+            System.out.println("Error al leer la rutina.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al leer la rutina.");
+        }
+    }
+
+    @PostMapping("/save_routine")
+    public ResponseEntity<?> saveRoutine(@RequestBody RoutineDTO routineDTO){
+        String username = routineDTO.getUsername();
+        if(username == null || username.isBlank()){
+            return ResponseEntity.badRequest().body("❌ Username inválido");
+        }
+
+        try {
+            writeRoutinesData.saveUserRoutine(username, routineDTO);
+            return ResponseEntity.ok("✅ Calendario guardado correctamente");
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("❌ Error al guardar el calendario");
+        }
+    }
+
 }

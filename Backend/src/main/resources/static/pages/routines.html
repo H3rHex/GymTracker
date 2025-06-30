@@ -32,7 +32,9 @@
     </header>
 
     <main>
-        <div class="card">
+        <a href="#routineContainer"> ⬇️ Ir a Rutina Semanal ⬇️ </a>
+
+        <div class="card" id="">
             <table>
                 <h2>RESUMEN SEMANAL</h2>
                 <thead>
@@ -72,7 +74,40 @@
                     </tr>
                 </tbody>
             </table>
-            <button onclick="setEditMode(event)" data-editing="false">Editar Calendario</button>
+            <button onclick="handleEditModeCalendar(event)" data-editing="false">Editar Calendario</button>
+        </div>
+        <div id="routineContainer">
+            <h1>🗓️ Rutina semanal</h1>
+            <table id="tabla-rutina">
+                <thead>
+                    <tr>
+                        <th>Lunes</th>
+                        <th>Martes</th>
+                        <th>Miércoles</th>
+                        <th>Jueves</th>
+                        <th>Viernes</th>
+                        <th>Sábado</th>
+                        <th>Domingo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="dia-lunes"></td>
+                        <td id="dia-martes"></td>
+                        <td id="dia-miercoles"></td>
+                        <td id="dia-jueves"></td>
+                        <td id="dia-viernes"></td>
+                        <td id="dia-sabado"></td>
+                        <td id="dia-domingo"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <button onclick="handleEditModeRoutine(event)" id="editModeRoutineBtn" data-editing="false">Editar
+                    Rutina</button>
+                <button onclick="addEjToCelda()" id="addEjerciosBTN" data-editing="false">Añadir Ejercicio</button>
+            </div>
+
         </div>
     </main>
 
