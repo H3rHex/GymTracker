@@ -148,15 +148,24 @@ button[data-editing="true"] {
     position: absolute;
 }
 
-#addEjerciosBTN[data-editing="true"] {
+#addEjerciosBTN[data-editing="true"],
+#handleVisibilityBtn[data-editing="false"] {
     background-color: var(--color-button-bg-primary);
     cursor: pointer;
 }
 
-#addEjerciosBTN[data-editing="false"] {
+#addEjerciosBTN[data-editing="false"],
+#handleVisibilityBtn[data-editing="false"] {
     background-color: var(--color-button-disabled);
     cursor: not-allowed;
     opacity: 70%;
+}
+
+#handleVisibilityBtn {
+    background-color: var(--color-button-bg-secondary);
+    border: 1.5px solid var(--color-border-divider);
+    border-radius: 40px;
+    font-style: italic;
 }
 
 .delEjButton {

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gym Tracker</title>
+    <title>Gym Tracker - Perfil</title>
 
     <link rel="icon" type="image/webp" href="/assets/images/favicon-ligth.webp">
 
@@ -18,29 +18,29 @@
         Light Mode
     </button>
 
+    <div id="app">
+        <main>
+            <h2><span id="usernameSpan"></span></h2>
+            <img id="profileImage" src="/assets/images/defaultProfileImage.webp" alt="profileImage">
 
-    <main>
-        <h2><span id="usernameSpan"></span></h2>
-        <img id="profileImage" src="/assets/images/defaultProfileImage.webp" alt="profileImage">
+            <div class="card" data-type="profileOptionCard">
+                <button id="changePassword">Cambiar contraseña</button>
+                <button id="changeUsername">Cambiar nombre de usuario</button>
+                <button id="closeSesion">Cerrar Sesion</button>
+                <button id="deleteAccount">Eliminar cuenta</button>
+            </div>
+            <div>
+                <a href=" /home">Pagina Principal</a>
+            </div>
 
-        <div class="card" data-type="profileOptionCard">
-            <button onclick="changePassword()">Cambiar contraseña</button>
-            <button onclick="changeUsername()">Cambiar nombre de usuario</button>
-            <button id="closeSesion" onclick="close_Sesion()">Cerrar Sesion</button>
-            <button id="closeSesion" onclick="delete_account()">Eliminar cuenta</button>
-        </div>
-        <div>
-            <a href="/home">Pagina Principal</a>
-        </div>
+        </main>
+    </div>
 
-    </main>
 </body>
 
 <!-- Scripts -->
 <script src=" /js/changeThemeMode.js"></script>
 
-<!-- HOME PAGE MANAGMENT SCRIPTS -->
-<script src="/js/Home.js"></script>
-<script src="/js/profileSettings.js"></script>
+<script type="module" src="/js/profileSettings.js"></script>
 
 </html>

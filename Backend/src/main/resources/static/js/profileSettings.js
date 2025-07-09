@@ -1,35 +1,43 @@
-function close_Sesion() {
-    if (confirm("Vas a cerrar sesion ¿Estás seguro?")) {
-        // El usuario hizo clic en "Aceptar"
+// IMPORTS
+import { checkLogin } from "/js/Home.js";
+import { createBasicWindow } from "/js/ModalWindows/BasicWindow.js";
+import { createConfirmWindow } from "/js/ModalWindows/ConfirmWindow.js";
+import { createDataWindow } from "/js/ModalWindows/DataWindow.js";
+
+async function close_Sesion() {
+    const response = await createConfirmWindow("Cerrar Sesion", "¿Estás seguro de que quieres cerrar sesión?");
+    if (response === true) {
         console.log("Usuario confirmó.");
         localStorage.clear();
+        window.location.href = '/';
     } else {
-        // El usuario hizo clic en "Cancelar"
         console.log("Usuario canceló.");
     }
 }
 
 async function delete_account() {
-    if (!confirm("Vas a eliminar tu cuenta y todos tus datos. ¿Estás seguro?")) {
+    const confirmDelete = await createConfirmWindow("Eliminar Cuenta", "¿Estás seguro de que quieres eliminar tu cuenta y todos tus datos?");
+    if (confirmDelete === false) {
         console.log("Usuario canceló.");
         return;
     }
 
     const username = localStorage.getItem("username");
     if (!username) {
-        alert("No se encontró un usuario registrado.");
+        createBasicWindow("ERROR", "No se encontró un usuario registrado.");
         return;
     }
 
     let password = null;
     while (!password) {
-        password = prompt("Por favor, ingresa tu contraseña:");
+        password = await createDataWindow("Eliminar Cuenta", "Introduce tu contraseña, por favor;", "", "", "password");
+        console.log(password);
         if (password === null) {
-            alert("No se puede continuar sin ingresar la contraseña.");
+            createBasicWindow("ERROR", "No se puede continuar sin ingresar la contraseña.");
             return;
         }
         if (password.trim() === "") {
-            alert("No ingresaste ninguna contraseña.");
+            createBasicWindow("ERROR", "No ingresaste ninguna contraseña.");
             password = null;
         }
     }
@@ -43,16 +51,17 @@ async function delete_account() {
         });
 
         if (!loginRes.ok) {
-            throw new Error("Credenciales incorrectas");
+            const errorData = await loginRes.json();
+            throw new Error(errorData.message || "Credenciales incorrectas");
         }
     } catch (err) {
-        alert(err.message);
+        createBasicWindow("ERROR", err.message);
         return;
     }
 
-
     // Confirmación final
-    if (!confirm("Este es el último aviso antes de eliminar tu cuenta. ¿Estás completamente seguro?")) {
+    const finalConfirm = await createConfirmWindow("Confirmar Eliminación", "Este es el último aviso antes de eliminar tu cuenta. ¿Estás completamente seguro?");
+    if (finalConfirm === false) {
         console.log("Usuario canceló en la segunda confirmación.");
         return;
     }
@@ -68,40 +77,42 @@ async function delete_account() {
         });
 
         if (delRes.ok) {
-            alert("✅ Tu cuenta ha sido eliminada.");
+            createBasicWindow("ÉXITO", "✅ Tu cuenta ha sido eliminada.");
             localStorage.clear();
             window.location.href = '/';
         } else {
-            throw new Error("❌ Error al eliminar tu cuenta.");
+            const errorData = await delRes.json();
+            throw new Error(errorData.message || "❌ Error al eliminar tu cuenta.");
         }
 
     } catch (err) {
-        alert("❌ Ocurrió un error al eliminar tu cuenta: " + err.message);
+        createBasicWindow("ERROR", err.message);
     }
 }
 
 async function changeUsername() {
-    if (!confirm("Vas a cambiar el nombre de usuario de tu cuenta. ¿Estás seguro?")) {
+    const confirmChange = await createConfirmWindow("Cambiar Nombre de Usuario", "¿Estás seguro de que quieres cambiar el nombre de usuario de tu cuenta?");
+    if (confirmChange === false) {
         console.log("Usuario canceló.");
         return;
     }
 
     let oldUsername = localStorage.getItem("username");
     if (!oldUsername) {
-        alert("No se encontró un usuario en registrado.");
+        createBasicWindow("ERROR", "No se encontró un usuario registrado.");
         return;
     }
 
     // Solicitar contraseña
     let password = null;
     while (!password) {
-        password = prompt("Por favor, ingresa tu contraseña:");
+        password = await createDataWindow("Cambiar nombre de usuario", "Introduce tu contraseña, por favor;", "", "", "password");
         if (password === null) {
-            alert("No se puede continuar sin ingresar la contraseña.");
+            createBasicWindow("ERROR", "No se puede continuar sin ingresar la contraseña.");
             return;
         }
         if (password.trim() === "") {
-            alert("No ingresaste ninguna contraseña.");
+            createBasicWindow("ERROR", "No ingresaste ninguna contraseña.");
             password = null;
         }
     }
@@ -117,25 +128,26 @@ async function changeUsername() {
         })
 
         if (!loginRes.ok) {
-            alert("❌ Credenciales incorrectas.");
+            const errorData = await loginRes.json();
+            createBasicWindow("ERROR", errorData.message || "❌ Credenciales incorrectas.");
             return;
         }
 
     } catch (err) {
-        alert("❌ Error en la verificación: " + err.message);
+        createBasicWindow("ERROR", err.message);
         return;
     }
 
     // Solicitar nuevo nombre de usuario
     let newUsername = null;
     while (!newUsername) {
-        newUsername = prompt("Por favor, introduce tu nuevo nombre de usuario:");
+        newUsername = await createDataWindow("Cambiar nombre de usuario", "Introduce tu nuevo nombre de usuario, por favor;", "", "", "text");
         if (newUsername === null) {
-            alert("Es necesario introducir un nuevo nombre de usuario para continuar.");
+            createBasicWindow("ERROR", "Es necesario introducir un nuevo nombre de usuario para continuar.");
             return;
         }
         if (newUsername.trim() === "") {
-            alert("No ingresaste ningun nombre de usuario.");
+            createBasicWindow("ERROR", "No ingresaste ningún nombre de usuario.");
             newUsername = null;
         }
     }
@@ -151,13 +163,14 @@ async function changeUsername() {
         })
 
         const checkText = await abilityRes.text();
-        if (!checkText.includes("Username disponible")) {
-            alert("❌ El nombre de usuario no está disponible.");
+        if (!abilityRes.ok || !checkText.includes("Username disponible")) {
+            const errorData = abilityRes.ok ? { message: checkText } : await abilityRes.json();
+            createBasicWindow("ERROR", errorData.message || "❌ El nombre de usuario no está disponible.");
             return;
         }
 
     } catch (err) {
-        alert("❌ Error al verificar disponibilidad: " + err.message);
+        createBasicWindow("ERROR", err.message);
         return;
     }
 
@@ -170,38 +183,40 @@ async function changeUsername() {
         });
 
         if (changeRes.ok) {
-            alert("✅ Nombre de usuario cambiado correctamente.");
+            createBasicWindow("ÉXITO", "✅ Nombre de usuario cambiado correctamente.");
             localStorage.setItem("username", newUsername);
         } else {
-            throw new Error("❌ Error al cambiar el nombre de usuario.");
+            const errorData = await changeRes.json();
+            throw new Error(errorData.message || "❌ Error al cambiar el nombre de usuario.");
         }
 
     } catch (err) {
-        alert(err.message);
+        createBasicWindow("ERROR", err.message);
     }
 }
 
 async function changePassword() {
-    if (!confirm("Vas a cambiar el nombre de usuario de tu cuenta. ¿Estás seguro?")) {
+    const confirmChange = await createConfirmWindow("Cambiar Contraseña", "¿Estás seguro de que quieres cambiar la contraseña de tu cuenta?"); // Changed prompt for changing password
+    if (confirmChange === false) {
         console.log("Usuario canceló.");
         return;
     }
 
     const username = localStorage.getItem("username");
     if (!username) {
-        alert("No se encontró un usuario en registrado.");
+        createBasicWindow("ERROR", "No se encontró un usuario registrado.");
         return;
     }
 
     let password = null;
     while (!password) {
-        password = prompt("Por favor, ingresa tu contraseña:");
+        password = await createDataWindow("Cambiar contraseña", "Introduce tu contraseña, por favor;", "", "", "password");
         if (password === null) {
-            alert("No se puede continuar sin ingresar la contraseña.");
+            createBasicWindow("ERROR", "No se puede continuar sin ingresar la contraseña.");
             return;
         }
         if (password.trim() === "") {
-            alert("No ingresaste ninguna contraseña.");
+            createBasicWindow("ERROR", "No ingresaste ninguna contraseña.");
             password = null;
         }
     }
@@ -215,23 +230,24 @@ async function changePassword() {
         });
 
         if (!loginRes.ok) {
-            throw new Error("Credenciales incorrectas");
+            const errorData = await loginRes.json();
+            throw new Error(errorData.message || "Credenciales incorrectas");
         }
     } catch (err) {
-        alert(err.message);
+        createBasicWindow("ERROR", err.message);
         return;
     }
 
     // Solicitar nueva contraseña
     let newPassword = null;
     while (!newPassword) {
-        newPassword = prompt("Por favor introduce tu nueva contraseña:");
+        newPassword = await createDataWindow("Cambiar contraseña", "Por favor, introduce tu nueva contraseña:", "", "", "password");
         if (newPassword === null) {
-            alert("Es necesario introducir una nueva contraseña para continuar.");
+            createBasicWindow("ERROR", "Es necesario introducir una nueva contraseña para continuar.");
             return;
         }
         if (newPassword.trim() === "") {
-            alert("No ingresaste ninguna contraseña.");
+            createBasicWindow("ERROR", "No ingresaste ninguna contraseña.");
             newPassword = null;
         }
     }
@@ -245,12 +261,38 @@ async function changePassword() {
         });
 
         if (changeRes.ok) {
-            alert("Contraseña actualizada correctamente.");
-            localStorage.setItem("password", newPassword);
+            createBasicWindow("ÉXITO", "Contraseña actualizada correctamente.");
+            // localStorage.setItem("password", newPassword); // Consider if you truly want to store plaintext password
         } else {
-            throw new Error("Hubo un error al cambiar la contraseña.");
+            const errorData = await changeRes.json();
+            throw new Error(errorData.message || "Hubo un error al cambiar la contraseña.");
         }
     } catch (err) {
-        alert(err.message);
+        createBasicWindow("ERROR", err.message);
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    checkLogin();
+
+    const deleteAccountBtn = document.getElementById('deleteAccount');
+    const changePasswordBtn = document.getElementById('changePassword');
+    const changeUsernameBtn = document.getElementById('changeUsername');
+    const closeSesionBtn = document.getElementById('closeSesion');
+
+    if (deleteAccountBtn) {
+        deleteAccountBtn.addEventListener('click', () => { delete_account() });
+    }
+
+    if (changePasswordBtn) {
+        changePasswordBtn.addEventListener('click', () => { changePassword() });
+    }
+
+    if (changeUsernameBtn) {
+        changeUsernameBtn.addEventListener('click', () => { changeUsername() });
+    }
+
+    if (closeSesionBtn) {
+        closeSesionBtn.addEventListener('click', () => { close_Sesion() });
+    }
+});

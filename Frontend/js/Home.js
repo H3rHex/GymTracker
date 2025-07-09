@@ -4,6 +4,8 @@ var password = localStorage.getItem("password");
 var dayMessageElement = document.getElementById("dayMessage");
 var userNameSpan = document.getElementById("usernameSpan");
 
+// IMPORTS NECESARIOS
+import { createBasicWindow } from "/js/ModalWindows/BasicWindow.js";
 
 
 // Lista de mensaje motivacionales
@@ -62,22 +64,21 @@ const motivational_message_list = [
 
 document.addEventListener("DOMContentLoaded", () => {
     checkLogin(); // Verica mediante una peticion al servidor que todo este  (por si acaso)
-    wellcome()
-
+    wellcome();
 });
 
 function wellcome() {
     if (userNameSpan) {
         userNameSpan.innerHTML = username; // Asigna el valor de username al contenido HTML
     }
-    if (window.location === ("/home")) {
+    // NOTA: window.location es un objeto, no una cadena. Para comparar la ruta, usa window.location.pathname
+    if (window.location.pathname === "/home") {
         showMessageWithTypingEffect();
     }
-
 }
 
 function typeWriter(text, i = 0, callback) {
-    if (i < text.length) {
+    if (dayMessageElement && i < text.length) { // Añadida comprobación de dayMessageElement
         dayMessageElement.innerHTML = text.substring(0, i + 1);
         setTimeout(() => typeWriter(text, i + 1, callback), 50); // velocidad de escritura (50 ms)
     } else if (callback) {
@@ -91,7 +92,9 @@ function showMessageWithTypingEffect() {
 
     typeWriter(message, 0, () => {
         setTimeout(() => {
-            dayMessageElement.innerHTML = "";  // limpia antes de la siguiente
+            if (dayMessageElement) { // Añadida comprobación de dayMessageElement
+                dayMessageElement.innerHTML = "";  // limpia antes de la siguiente
+            }
             showMessageWithTypingEffect();
         }, 5000); // espera 5 segundos antes de mostrar el próximo mensaje
     });
@@ -99,7 +102,7 @@ function showMessageWithTypingEffect() {
 
 
 // PETICION AL SERVIDOR CON CREDENCIALES
-async function checkLogin() {
+export async function checkLogin() {
     try {
         const response = await fetch("/user_login", {
             method: "POST",
@@ -112,11 +115,15 @@ async function checkLogin() {
         if (response.status === 200) {
             return;
         } else {
-            // ✅ Redirigir a otra página
-            window.location.href = '/';
+            // Redirigir a otra página
+            createBasicWindow("SESIÓN EXPIRADA", "Tu sesión ha expirado o no has iniciado sesión. Por favor, vuelve a iniciar sesión.").then(() => {
+                window.location.href = '/'; // Redirige después de que el usuario cierre la ventana modal
+            });
         }
     } catch (error) {
-        console.error('❌ Error:', error.message);
-        alert(error.message);
+        console.error('❌ Error de conexión:', error.message);
+        createBasicWindow("ERROR DE CONEXIÓN", "No se pudo conectar con el servidor para verificar la sesión: " + error.message);
+        // Opcional: Podrías redirigir aquí también si la conexión es crítica
+        // window.location.href = '/'; 
     }
 }

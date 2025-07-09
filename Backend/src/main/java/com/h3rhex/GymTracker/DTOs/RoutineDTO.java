@@ -8,6 +8,7 @@ import com.h3rhex.GymTracker.Models.DiaRutina;
 public class RoutineDTO {
     // Esta propiedad mapea a la clave "username" de tu JSON
     private String username;
+    private Boolean isPublic;
 
     // Estas propiedades deben mapear a las claves de los días de tu JSON ("lunes", "martes", etc.)
     private DiaRutina lunes;
@@ -32,6 +33,12 @@ public class RoutineDTO {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public Boolean getIsPublic() { return  isPublic; }
+
+    public void setIsPublic(Boolean isPublic) {this.isPublic = isPublic; }
+
+    // DIAS RUTINA
 
     public DiaRutina getLunes() {
         return lunes;

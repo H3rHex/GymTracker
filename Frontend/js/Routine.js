@@ -1,3 +1,6 @@
+// IMPORTS
+import { createBasicWindow } from "/js/ModalWindows/BasicWindow.js";
+
 document.addEventListener("DOMContentLoaded", () => {
     loadCalendarData();
     loadRoutineData();
@@ -5,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!localStorage.getItem("routineEditingMode")) {
         localStorage.setItem("routineEditingMode", false);
+        localStorage.setItem("routineIsPublic", false);
     }
 });
 
@@ -65,6 +69,7 @@ async function loadCalendarData() {
 
     } catch (error) {
         console.error("Error al establecer los ejercicios:", error);
+        createBasicWindow("ERROR", "Error al cargar los datos del calendario: " + error.message);
     }
 }
 
@@ -81,7 +86,7 @@ async function saveCalendar() {
 
     // Validación por si no se obtiene el username
     if (!calendario || !calendario.username) {
-        alert("❌ No se pudo obtener el usuario. Asegúrate de haber iniciado sesión.");
+        createBasicWindow("ERROR", "No se pudo obtener el usuario. Asegúrate de haber iniciado sesión.");
         return;
     }
 
@@ -96,13 +101,13 @@ async function saveCalendar() {
         });
 
         if (resSaveFetch.ok) {
-            alert("✅ Calendario guardado con éxito");
+            createBasicWindow("ÉXITO", "✅ Calendario guardado con éxito.");
         } else {
-            alert("⚠️ Ha habido un problema guardando los cambios");
+            createBasicWindow("ADVERTENCIA", "⚠️ Ha habido un problema guardando los cambios.");
         }
     } catch (error) {
         console.error("❌ Error en la petición:", error);
-        alert("❌ Error de conexión al guardar el calendario.");
+        createBasicWindow("ERROR", "❌ Error de conexión al guardar el calendario.");
     }
 }
 
@@ -123,7 +128,7 @@ function generarCalendarioDesdeInputs() {
 
 //EDIT MODE
 
-let isEditing = false;
+let isEditing = false; // This variable seems unused, localStorage is used instead
 
 function handleEditModeCalendar(event) {
     const button = event.target;
@@ -208,14 +213,14 @@ class Ejercicio {
 
         const pesoEj = document.createElement('textarea');
         pesoEj.classList.add('ejercicio-pesoEj', 'routine-textarea');
-        pesoEj.value = `Peso: ${this.reps} KG`;
+        pesoEj.value = `Peso: ${this.reps} KG`; // Note: Using reps for weight here, usually a separate input
         pesoEj.setAttribute("disabled", "true");
         container.appendChild(pesoEj);
 
         const delButton = document.createElement("button");
         delButton.textContent = "❌";
         delButton.classList.add("delEjButton");
-        delButton.dataset.editing = "false";
+        delButton.dataset.editing = "false"; // Initial state
         delButton.addEventListener('click', (event) => {
             delEj(event);
         });
@@ -277,80 +282,78 @@ async function loadRoutineData() {
 
     } catch (error) {
         console.error('Error al procesar rutina:', error);
+        createBasicWindow("ERROR", "Error al cargar los datos de la rutina: " + error.message);
     }
 }
 
 function handleEditModeRoutine(event) {
     const button = event.target;
     const addEjButton = document.getElementById("addEjerciosBTN");
+    const isPublicButton = document.getElementById("handleVisibilityBtn");
 
-    // Convertir la HTMLCollection de delButtons a un Array para garantizar consistencia
     const delButtons = document.getElementsByClassName("delEjButton");
 
-    // Leer el estado actual directamente del dataset del botón que fue clickado
     const isEditingCurrentStateBooleana = localStorage.getItem("routineEditingMode") === "true";
     const nuevoEstado = !isEditingCurrentStateBooleana;
     localStorage.setItem("routineEditingMode", nuevoEstado.toString());
     console.log(localStorage.getItem("routineEditingMode"));
 
-    // Actualizar el dataset del botón que activó el evento
     button.dataset.editing = nuevoEstado;
 
-    // Asegurarse de que addEjButton existe antes de intentar acceder a su dataset
     if (addEjButton) {
         addEjButton.dataset.editing = nuevoEstado.toString();
     } else {
         console.warn("Elemento con ID 'addEjerciosBTN' no encontrado.");
     }
 
-    // Recorrer y actualizar los botones de eliminar (ahora desde un Array)
+    if (isPublicButton) {
+        isPublicButton.dataset.editing = nuevoEstado.toString();
+    } else {
+        console.warn("Elemento con ID 'handleVisibilityBtn' no encontrado."); // Corrected ID in warning
+    }
+
     for (let delBtn of delButtons) {
-        // Asegúrate de que el botón realmente existe en el DOM en ese momento,
-        // aunque Array.from ya ayuda a tomar una instantánea.
         if (delBtn) {
             delBtn.dataset.editing = nuevoEstado.toString();
         }
     }
 
     const routineTextAreas = document.getElementsByClassName('routine-textarea');
-    // No necesitamos if (!routineTextAreas) return null; aquí, ya que getElementsByClassName
-    // siempre devuelve una colección, aunque esté vacía.
 
     if (nuevoEstado) { // Si el nuevo estado es true (activando edición)
-        // CAMBIAR BOTON
         button.textContent = 'Guardar Cambios';
 
-        // ACTIVAR EDICION DE TEXTO
         for (let textArea of routineTextAreas) {
             textArea.removeAttribute("disabled");
         }
     } else { // Si el nuevo estado es false (desactivando edición)
-        // CAMBIAR BOTON (fuera del bucle)
         button.textContent = 'Editar rutina';
 
-        // DESACTIVAR EDICION DE TEXTO
         for (let textArea of routineTextAreas) {
             textArea.setAttribute("disabled", "");
         }
 
-        // GUARDAR CAMBIOS (después de deshabilitar todos los textareas)
         saveNewRoutine();
     }
 }
 
-function addEjToCelda() {
+async function addEjToCelda() { // Changed to async because createBasicWindow is async
     const isEditingMode = localStorage.getItem("routineEditingMode") === "true";
     if (!isEditingMode) {
-        //alert("Debes estar en modo edición para añadir ejercicios."); // O un mensaje más amigable
-        return null; // O simplemente return; si no necesitas devolver null
+        createBasicWindow("INFO", "Debes estar en modo edición para añadir ejercicios.");
+        return null;
     }
 
-    const dia = (prompt("Introduce el dia al que quieres agregar el ejercicio"));
+    const dia = prompt("Introduce el día al que quieres agregar el ejercicio"); // Keep prompt for input for now
+    if (dia === null) { // User clicked cancel on prompt
+        console.log("Usuario canceló la introducción del día.");
+        return null;
+    }
     const diaSinAcentos = removeAccents(dia);
 
     const diasValidos = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
     if (!diasValidos.includes(diaSinAcentos.toLowerCase())) {
-        alert("Introduce un dia valido");
+        createBasicWindow("ADVERTENCIA", "Introduce un día válido (Lunes, Martes, etc.).");
         return null;
     }
 
@@ -358,18 +361,29 @@ function addEjToCelda() {
 
     if (!celda) {
         console.error(`Error: No se encontró la celda con ID 'dia-${diaSinAcentos.toLowerCase()}'.`);
-        return; // Salir si la celda no existe
+        createBasicWindow("ERROR", `No se encontró la celda para el día '${diaSinAcentos}'.`);
+        return;
     }
 
-    const nameEj = prompt("Introduce el nombre del ejercicio");
-    const seriesEj = parseInt(prompt("Introduce las series del ejercicio"), 10);
-    const repsEj = parseInt(prompt("Introduce las repeticiones del ejercicio"), 10);
+    const nameEj = prompt("Introduce el nombre del ejercicio"); // Keep prompt for input for now
+    if (nameEj === null || nameEj.trim() === "") {
+        createBasicWindow("ADVERTENCIA", "El nombre del ejercicio no puede estar vacío.");
+        return null;
+    }
 
-    // PASO 1: Crea la instancia de tu objeto JavaScript Ejercicio con los datos
+    const seriesEj = parseInt(prompt("Introduce las series del ejercicio"), 10); // Keep prompt for input for now
+    if (isNaN(seriesEj) || seriesEj <= 0) {
+        createBasicWindow("ADVERTENCIA", "Las series deben ser un número válido y positivo.");
+        return null;
+    }
+
+    const repsEj = parseInt(prompt("Introduce las repeticiones del ejercicio"), 10); // Keep prompt for input for now
+    if (isNaN(repsEj) || repsEj <= 0) {
+        createBasicWindow("ADVERTENCIA", "Las repeticiones deben ser un número válido y positivo.");
+        return null;
+    }
+
     const ejercicioData = new Ejercicio(nameEj, seriesEj, repsEj);
-
-    // PASO 2: CONVIERTE esa instancia de objeto JavaScript en un ELEMENTO DOM.
-    // Esto es lo que falta en tu código. Necesitas una función o método que haga esto.
     const nuevoEjercicioElementoDOM = ejercicioData.crearElemento();
 
     celda.appendChild(nuevoEjercicioElementoDOM);
@@ -380,73 +394,99 @@ function delEj(e) {
     const targetParent = e.target.parentElement;
     console.log("Elemento padre del botón clickado:", targetParent);
 
-    const editModeButton = document.getElementById("editModeRoutineBtn");
+    const editModeButton = document.getElementById("editModeRoutineBtn"); // Assuming this is the correct ID for the edit button
 
-    let isEditing = editModeButton.dataset.editing === "true";
-    console.log("¿Está en modo edición?", isEditing); // Ahora esto imprimirá true o false booleano
+    let isEditing = editModeButton ? editModeButton.dataset.editing === "true" : false; // Check if button exists
+    console.log("¿Está en modo edición?", isEditing);
 
     try {
         if (isEditing) {
             if (targetParent) {
                 targetParent.remove();
-                console.log("Elemento eliminado con éxito.");
             } else {
                 console.warn("No se pudo encontrar el elemento padre para eliminar.");
             }
         } else {
+            createBasicWindow("INFO", "Debes estar en modo edición para eliminar ejercicios.");
             console.log("Eliminación no permitida: no está en modo edición.");
             return;
         }
     } catch (err) {
         console.error("Error al intentar eliminar el elemento:", err);
+        createBasicWindow("ERROR", "Error al intentar eliminar el ejercicio: " + err.message);
     }
 }
+
+async function visibilityMode() { // Changed to async because createBasicWindow is async
+    const btn = document.getElementById("handleVisibilityBtn");
+    const isPublic = localStorage.getItem("routineIsPublic");
+    let currentIsPublic;
+
+    const isEditingMode = localStorage.getItem("routineEditingMode") === "true";
+    if (!isEditingMode) {
+        createBasicWindow("INFO", "Debes estar en modo edición para cambiar la visibilidad de la rutina.");
+        return null;
+    }
+
+    if (isPublic === "true") {
+        currentIsPublic = false;
+        localStorage.setItem("routineIsPublic", false);
+        createBasicWindow("INFO", "Rutina establecida como: Privada.");
+    } else {
+        currentIsPublic = true;
+        localStorage.setItem("routineIsPublic", true);
+        createBasicWindow("INFO", "Rutina establecida como: Pública.");
+    }
+
+    try {
+        if (btn) { // Ensure button exists before changing textContent
+            if (currentIsPublic === true) {
+                btn.textContent = "Publica";
+            } else {
+                btn.textContent = "Privada";
+            }
+        }
+    } catch (err) {
+        console.error("Error al actualizar el botón de visibilidad:", err);
+        createBasicWindow("ERROR", "Error al cambiar el estado del botón de visibilidad: " + err.message);
+    }
+}
+
 // CREAR LISTA BAKEND
 
 function getDayRoutine(day) {
-    // 1. Obtener el elemento padre
     const diaLunesElemento = document.getElementById(`dia-${day}`);
 
-    // Verificar si el elemento existe
     if (!diaLunesElemento) {
         console.error(`No se encontró el elemento con ID 'dia-${day}'.`);
-        return null; // O un objeto vacío, según lo que prefieras en caso de error
+        return null;
     }
 
-    // 2. Obtener los elementos hijos (los contenedores de cada ejercicio)
     const contenedoresEjercicios = diaLunesElemento.querySelectorAll('.container-ejercicio');
 
     const ejerciciosArray = [];
 
-    // 3. Iterar sobre cada hijo (ejercicio)
     contenedoresEjercicios.forEach(contenedor => {
-        // 4. Obtener los valores de cada ejercicio
         const nombreElemento = contenedor.querySelector('.ejercicio-nombre');
         const seriesElemento = contenedor.querySelector('.ejercicio-series');
         const repeticionesElemento = contenedor.querySelector('.ejercicio-repeticiones');
 
-        // Extraer el texto y limpiar/convertir
         const nombre = nombreElemento ? nombreElemento.value : 'Desconocido';
-        // Usamos .split(': ')[1] para obtener solo el número después de "Series:"
         const seriesTexto = seriesElemento ? seriesElemento.value.split(': ')[1] : '0';
-        // Usamos parseInt para convertir el texto de las series a un número entero
         const series = parseInt(seriesTexto, 10);
 
         const repeticionesTexto = repeticionesElemento ? repeticionesElemento.value.split(': ')[1] : '0';
         const repeticiones = parseInt(repeticionesTexto, 10);
 
-        // 5. Construir el objeto de ejercicio
         const ejercicio = {
             nombre: nombre,
             series: series,
             repeticiones: repeticiones
         };
 
-        // 6. Guardar todos los ejercicios en el array
         ejerciciosArray.push(ejercicio);
     });
 
-    // 7. Estructurar el objeto final
     const datosEntrenamiento = {
         [day]: {
             "ejercicios": ejerciciosArray
@@ -458,34 +498,32 @@ function getDayRoutine(day) {
 
 function createRoutineJson() {
     const username = localStorage.getItem("username");
-    let routine = { "username": username }; // Objeto inicial con username
+    const is_public = localStorage.getItem("routineIsPublic");
+    let routine = { "username": username, "isPublic": is_public };
 
     const dias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
 
     dias.forEach(day => {
-        const dayData = getDayRoutine(day); // Esto devuelve { "dia": { "ejercicios": [...] } }
+        const dayData = getDayRoutine(day);
 
         if (dayData && dayData[day]) {
-            routine[day] = dayData[day]; // ¡Asignamos el OBJETO anidado directamente!
+            routine[day] = dayData[day];
         } else {
-            routine[day] = { "ejercicios": [] }; // Días sin ejercicios se envían como objeto vacío
+            routine[day] = { "ejercicios": [] };
         }
     });
-    return routine; // Devolvemos el objeto anidado
+    return routine;
 }
 
 async function saveNewRoutine() {
-    // Generar el nuevo objeto de lista
     const routine = createRoutineJson();
-    //console.log(routine);
+    console.log(routine);
 
-    // Validación por si no se obtiene el username
     if (!routine || !routine.username) {
-        alert("❌ No se pudo obtener la rutina");
+        createBasicWindow("ERROR", "No se pudo obtener la rutina para guardar.");
         return;
     }
 
-    // Enviar al backend
     try {
         const resSaveFetch = await fetch("/save_routine", {
             method: 'POST',
@@ -496,12 +534,12 @@ async function saveNewRoutine() {
         });
 
         if (resSaveFetch.ok) {
-            //alert("✅ Calendario guardado con éxito");
+            createBasicWindow("ÉXITO", "✅ Rutina guardada con éxito.");
         } else {
-            alert("⚠️ Ha habido un problema guardando los cambios");
+            createBasicWindow("ADVERTENCIA", "⚠️ Ha habido un problema guardando los cambios de la rutina.");
         }
     } catch (error) {
         console.error("❌ Error en la petición:", error);
-        alert("❌ Error de conexión al guardar el calendario.");
+        createBasicWindow("ERROR", "❌ Error de conexión al guardar la rutina.");
     }
 }

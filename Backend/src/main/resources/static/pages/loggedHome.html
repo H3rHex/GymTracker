@@ -25,28 +25,29 @@
             <nav>
                 <a href="/profile">Perfil 👤</a>
                 <a href="/rutinas">Rutinas 📅</a>
-                <a href="/progreso">Progreso 📊</a>
-
                 <button id="closeSesion" onclick="close_Sesion()">Cerrar Sesion</button>
 
             </nav>
         </div>
     </header>
-    <main>
-        <h2>Bienvenido/a <span id="usernameSpan"></span> a GymTracker</h2>
-        <img id="profileImage" src="/assets/images/defaultProfileImage.webp" alt="profileImage">
+    <div id="app">
+        <main>
+            <h2>Bienvenido/a <span id="usernameSpan"></span> a GymTracker</h2>
+            <img id="profileImage" src="/assets/images/defaultProfileImage.webp" alt="profileImage">
 
-        <div>
-            <h4 id="dayMessage"></h4>
-        </div>
-    </main>
+            <div>
+                <h4 id="dayMessage"></h4>
+            </div>
+        </main>
+
+    </div>
 </body>
 
 <!-- Scripts -->
 <script src="/js/changeThemeMode.js"></script>
 
 <!-- HOME PAGE MANAGMENT SCRIPTS -->
-<script src="/js/Home.js"></script>
+<script type="module" src="/js/Home.js"></script>
 <script>
     function close_Sesion() {
         if (confirm("Vas a cerrar sesion ¿Estás seguro?")) {

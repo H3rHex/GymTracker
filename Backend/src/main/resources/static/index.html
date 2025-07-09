@@ -18,51 +18,57 @@
         Light Mode
     </button>
 
-    <header>
-        <h2 id="username"></h2>
-        <span class="logo"></span>
+    <div id="app" data-modalActive="false">
+        <header>
+            <h2 id="username"></h2>
+            <span class="logo"></span>
 
-        <div class="left">
-            <nav>
-                <a href="/login">Iniciar Sesion</a>
-                <a href="/register">Registrarse</a>
-            </nav>
-        </div>
-    </header>
-    <main>
-        <h3>Bienvenido/a a GymTracker – Tu progreso, en un solo lugar.</h3>
-        <div class="card">
-            <h2>¿Aún no tienes cuenta?</h2>
-            <p>Únete gratis y empieza a registrar tu progreso en el gym. Visualiza tu evolución y mantente motivado cada
-                día. 💪</p>
-            <a href="/register" class="btn">Registrarse</a>
-        </div>
+            <div class="left">
+                <nav>
+                    <a href="/login">Iniciar Sesion</a>
+                    <a href="/register">Registrarse</a>
+                </nav>
+            </div>
+        </header>
+        <main>
+            <h3>Bienvenido/a a GymTracker – Tu progreso, en un solo lugar.</h3>
+            <div class="card">
+                <h2>¿Aún no tienes cuenta?</h2>
+                <p>Únete gratis y empieza a registrar tu progreso en el gym. Visualiza tu evolución y mantente motivado
+                    cada
+                    día. 💪</p>
+                <a href="/register" class="btn">Registrarse</a>
+            </div>
 
-        <div>
-            <section>
-                <h3>🏋️‍♀️ ¿Qué es GymTracker?</h3>
-                <p><strong>GymTracker</strong>es tu compañero personal de entrenamiento.</p>
-                <p>Una aplicación pensada para ayudarte a registrar tus rutinas, ver tu evolución y mantenerte motivado
-                    cadadía.
-                </p>
-                <p>Ya no tienes que recordar qué hiciste la semana pasada ni adivinar cuánto peso levantar hoy:
-                    GymTracker lo guarda por ti y te guía en el proceso.</p>
-                <strong>👉 Ideal tanto si estás empezando en el gimnasio como si llevas tiempo entrenando.</strong>
-            </section>
-            <section>
-                <h3>🚀 ¿Cómo funciona?</h3>
-                <p>1️⃣ <strong>Regístrate</strong> gratis y crea tu perfil.</p>
-                <p>2️⃣ <strong>Registra tus rutinas</strong> y ejercicios fácilmente.</p>
-                <p>3️⃣ <strong>Visualiza tu progreso</strong> con gráficos y estadísticas.</p>
-                <p>4️⃣ <strong>Mantente motivado</strong> con recordatorios y logros.</p>
-            </section>
-        </div>
-    </main>
+            <div>
+                <section>
+                    <h3>🏋️‍♀️ ¿Qué es GymTracker?</h3>
+                    <p><strong>GymTracker</strong>es tu compañero personal de entrenamiento.</p>
+                    <p>Una aplicación pensada para ayudarte a registrar tus rutinas, ver tu evolución y mantenerte
+                        motivado
+                        cadadía.
+                    </p>
+                    <p>Ya no tienes que recordar qué hiciste la semana pasada ni adivinar cuánto peso levantar hoy:
+                        GymTracker lo guarda por ti y te guía en el proceso.</p>
+                    <strong>👉 Ideal tanto si estás empezando en el gimnasio como si llevas tiempo entrenando.</strong>
+                </section>
+                <section>
+                    <h3>🚀 ¿Cómo funciona?</h3>
+                    <p>1️⃣ <strong>Regístrate</strong> gratis y crea tu perfil.</p>
+                    <p>2️⃣ <strong>Registra tus rutinas</strong> y ejercicios fácilmente.</p>
+                    <p>3️⃣ <strong>Visualiza tu progreso</strong> con gráficos y estadísticas.</p>
+                    <p>4️⃣ <strong>Mantente motivado</strong> con recordatorios y logros.</p>
+                </section>
+            </div>
+        </main>
+    </div>
 </body>
 
 <!-- Scripts -->
 <script src="/js/changeThemeMode.js"></script>
-<script>
+<script type="module">
+    import { createBasicWindow } from "/js/ModalWindows/BasicWindow.js";
+
     document.addEventListener("DOMContentLoaded", () => {
         if (localStorage.getItem("username") !== null && localStorage.getItem("password") !== null) {
             checkLogin(); // Llama a la función
@@ -92,7 +98,7 @@
             }
         } catch (error) {
             console.error('❌ Error:', error.message);
-            alert(error.message);
+            createBasicWindow("ERROR", error.message);
         }
     }
 </script>

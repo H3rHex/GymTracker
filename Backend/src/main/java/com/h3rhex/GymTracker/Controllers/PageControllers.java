@@ -31,8 +31,13 @@ public class PageControllers {
     @RequestMapping("/rutinas")
     String rutinas() { return "forward:/pages/routines.html"; }
 
-    @RequestMapping("/progreso")
-    @ResponseBody
-    String progreso() { return "En desarrollo"; }
+    @RequestMapping("/fit-share")
+    String fitShare() { return "forward:/pages/fitShare"; }
+
+    /*
+        @RequestMapping("/progreso")
+        @ResponseBody
+        String progreso() { return "En desarrollo"; }
+     */
 
 }

@@ -1,87 +1,87 @@
-function sendForm(e) {
-    e.preventDefault(); // Evita recargar la página
+import { createBasicWindow } from "/js/ModalWindows/BasicWindow.js";
+
+async function sendForm(e) {
+    e.preventDefault();
 
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    fetch("/user_login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ "username": username, "password": password })
-    })
-        .then((response) => {
-            if (response.ok) {
-                localStorage.setItem("username", username);
-                localStorage.setItem("password", password);
-                return response.text();
-            } else {
-                throw new Error("Credenciales incorrectas");
-            }
-        })
-        .then((message) => {
-            alert(message); // o puedes usar SweetAlert o Toastify
-            window.location.href = '/home';
-        })
-        .catch((err) => {
-            alert(err.message);
+    try {
+        const response = await fetch("/user_login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ "username": username, "password": password })
         });
+
+        if (response.ok) {
+            localStorage.setItem("username", username);
+            localStorage.setItem("password", password);
+            const message = await response.text();
+            showInfoAndRedirect("ÉXITO", message, '/home'); // Usar la función auxiliar
+        } else {
+            const errorText = await response.text();
+            createBasicWindow("ERROR", errorText || "Credenciales incorrectas"); // No redirige, así que no se necesita el auxiliar
+        }
+    } catch (err) {
+        createBasicWindow("ERROR", err.message);
+    }
 }
 
-function sendFormRegister(e) {
-    e.preventDefault(); // Evita recargar la página
+async function sendFormRegister(e) {
+    e.preventDefault();
 
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    fetch("/user_registration", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ "username": username, "password": password })
-    })
-        .then((response) => {
-            if (response.ok) {
-                localStorage.setItem("username", username);
-                localStorage.setItem("password", password);
-
-                window.location.href = '/home';
-            } else {
-                throw new Error("Error al registrar el usuario");
-            }
-        })
-        .catch((err) => {
-            alert(err.message);
+    try {
+        const response = await fetch("/user_registration", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ "username": username, "password": password })
         });
+
+        if (response.ok) {
+            localStorage.setItem("username", username);
+            localStorage.setItem("password", password);
+            showInfoAndRedirect("REGISTRO EXITOSO", "¡Usuario registrado con éxito!", '/home'); // Usar la función auxiliar
+        } else {
+            const errorText = await response.text();
+            createBasicWindow("ERROR", errorText || "Error al registrar el usuario");
+        }
+    } catch (err) {
+        createBasicWindow("ERROR", err.message);
+    }
 }
 
-function checkUsernameAvailability(e) {
+async function checkUsernameAvailability(e) {
     const username = document.getElementById("username").value;
     let event = e;
 
-    fetch("/check_username", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ "username": username })
-    })
-        .then(response => response.text())
-        .then(text => {
-            if (text.includes("Username disponible")) {
-                sendFormRegister(event);
-            } else {
-                alert("❌ Nombre de usuario no disponible");
-            }
-        })
-        .catch((err) => {
-            alert(err.message);
+    try {
+        const response = await fetch("/check_username", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ "username": username })
         });
+        const text = await response.text();
+
+        if (text.includes("Username disponible")) {
+            sendFormRegister(event);
+        } else {
+            createBasicWindow("ADVERTENCIA", "❌ Nombre de usuario no disponible");
+        }
+    } catch (err) {
+        createBasicWindow("ERROR", err.message);
+    }
 }
 
-function checkPasswords(e) {
+async function checkPasswords(e) {
     e.preventDefault();
     let event = e;
 
@@ -89,12 +89,12 @@ function checkPasswords(e) {
     const confirmPassword = document.getElementById("confirm_password").value;
 
     if (password !== confirmPassword) {
-        alert("Las contraseñas no coinciden");
+        createBasicWindow("ADVERTENCIA", "Las contraseñas no coinciden");
         return false;
     }
-    checkUsernameAvailability(event)
+    checkUsernameAvailability(event);
 }
-// Boton de logeo automatico
+
 async function buttonLogin_registerPage() {
     const username = localStorage.getItem("username");
     const password = localStorage.getItem("password");
@@ -109,14 +109,14 @@ async function buttonLogin_registerPage() {
         });
 
         if (response.status === 200) {
-            // ✅ Redirigir a otra página
-            window.location.href = '/home';
+            window.location.href = '/home'; // Redirige directamente, no necesita modal informativa previa
         } else {
-            throw new Error("Credenciales incorrectas");
+            const errorText = await response.text();
+            createBasicWindow("ERROR", errorText || "Credenciales incorrectas");
         }
     } catch (error) {
         console.error('❌ Error:', error.message);
-        alert(error.message);
+        createBasicWindow("ERROR", error.message);
     }
 }
 
@@ -125,9 +125,9 @@ function togglePasswordVisibility(buttonElement) {
 
     if (passwordInput.type === "password") {
         passwordInput.type = "text";
-        buttonElement.textContent = "👀";
+        buttonElement.textContent = "🙈";
     } else {
         passwordInput.type = "password";
-        buttonElement.textContent = "🙈";
+        buttonElement.textContent = "👀";
     }
 }

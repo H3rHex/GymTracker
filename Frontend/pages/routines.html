@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gym Tracker</title>
+    <title>Gym Tracker - Rutinas</title>
 
     <link rel="icon" type="image/webp" href="/assets/images/favicon-ligth.webp">
 
@@ -25,7 +25,6 @@
             <nav>
                 <a href="/home">Pagina Principal</a>
                 <a href="/profile">Perfil 👤</a>
-                <a href="/progreso">Progreso 📊</a>
 
             </nav>
         </div>
@@ -76,7 +75,7 @@
             </table>
             <button onclick="handleEditModeCalendar(event)" data-editing="false">Editar Calendario</button>
         </div>
-        <div id="routineContainer">
+        <div id="routineContainer" data-isPublic="false">
             <h1>🗓️ Rutina semanal</h1>
             <table id="tabla-rutina">
                 <thead>
@@ -106,6 +105,7 @@
                 <button onclick="handleEditModeRoutine(event)" id="editModeRoutineBtn" data-editing="false">Editar
                     Rutina</button>
                 <button onclick="addEjToCelda()" id="addEjerciosBTN" data-editing="false">Añadir Ejercicio</button>
+                <button onclick="visibilityMode()" id="handleVisibilityBtn" data-editing="false">Privada</button>
             </div>
 
         </div>
@@ -113,7 +113,7 @@
 
     <!-- Scripts -->
     <script src="/js/changeThemeMode.js"></script>
-    <script src="/js/Routine.js"></script>
+    <script type="module" src="/js/Routine.js"></script>
 
     <!--z HOME PAGE MANAGMENT SCRIPTS 
             <script src="/js/Home.js"></script> 
