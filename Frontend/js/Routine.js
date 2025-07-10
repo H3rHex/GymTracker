@@ -1,5 +1,6 @@
 // IMPORTS
 import { createBasicWindow } from "/js/ModalWindows/BasicWindow.js";
+import { createDataWindow } from "/js/ModalWindows/DataWindow.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     loadCalendarData();
@@ -9,6 +10,22 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!localStorage.getItem("routineEditingMode")) {
         localStorage.setItem("routineEditingMode", false);
         localStorage.setItem("routineIsPublic", false);
+    }
+
+    const editCalendarBtn = document.getElementById("editModeCalendarBtn");
+    if (editCalendarBtn) {
+        editCalendarBtn.addEventListener("click", handleEditModeCalendar);
+    }
+    const editRoutineBtn = document.getElementById("editModeRoutineBtn");
+    // Verificamos que los botones existan antes de añadir los listeners
+    if (editRoutineBtn) {
+        editRoutineBtn.addEventListener("click", handleEditModeRoutine);
+    }
+
+    const addEjerciciosBtn = document.getElementById("addEjerciosBTN");
+
+    if (addEjerciciosBtn) {
+        addEjerciciosBtn.addEventListener("click", addEjToCelda);
     }
 });
 
@@ -69,7 +86,7 @@ async function loadCalendarData() {
 
     } catch (error) {
         console.error("Error al establecer los ejercicios:", error);
-        createBasicWindow("ERROR", "Error al cargar los datos del calendario: " + error.message);
+        // createBasicWindow("ERROR", "Error al cargar los datos del calendario: " + error.message);
     }
 }
 
@@ -165,6 +182,7 @@ class Ejercicio {
         this.series = seriesEjercicio;
         this.reps = repsEjercicio;
 
+
         // DEBUG: Muestra los valores que recibe el constructor
         // console.log("DEBUG: Ejercicio constructor - nombre:", this.nombre, "series:", this.series, "reps:", this.reps);
     }
@@ -213,7 +231,7 @@ class Ejercicio {
 
         const pesoEj = document.createElement('textarea');
         pesoEj.classList.add('ejercicio-pesoEj', 'routine-textarea');
-        pesoEj.value = `Peso: ${this.reps} KG`; // Note: Using reps for weight here, usually a separate input
+        pesoEj.value = `Peso: 0 KG`; // Note: Using reps for weight here, usually a separate input
         pesoEj.setAttribute("disabled", "true");
         container.appendChild(pesoEj);
 
@@ -282,7 +300,7 @@ async function loadRoutineData() {
 
     } catch (error) {
         console.error('Error al procesar rutina:', error);
-        createBasicWindow("ERROR", "Error al cargar los datos de la rutina: " + error.message);
+        // createBasicWindow("ERROR", "Error al cargar los datos de la rutina: " + error.message);
     }
 }
 
@@ -344,7 +362,7 @@ async function addEjToCelda() { // Changed to async because createBasicWindow is
         return null;
     }
 
-    const dia = prompt("Introduce el día al que quieres agregar el ejercicio"); // Keep prompt for input for now
+    const dia = await createDataWindow("Añadir nuevo ejercicio", "Introduce el día al que quieres agregar el ejercicio", "", "", "text");
     if (dia === null) { // User clicked cancel on prompt
         console.log("Usuario canceló la introducción del día.");
         return null;
@@ -365,19 +383,19 @@ async function addEjToCelda() { // Changed to async because createBasicWindow is
         return;
     }
 
-    const nameEj = prompt("Introduce el nombre del ejercicio"); // Keep prompt for input for now
+    const nameEj = await createDataWindow("Añadir nuevo ejercicio", "Introduce el nombre del ejercicio", "", "", "text");
     if (nameEj === null || nameEj.trim() === "") {
         createBasicWindow("ADVERTENCIA", "El nombre del ejercicio no puede estar vacío.");
         return null;
     }
 
-    const seriesEj = parseInt(prompt("Introduce las series del ejercicio"), 10); // Keep prompt for input for now
+    const seriesEj = await createDataWindow("Añadir nuevo ejercicio", "Introduce las series del ejercicio", "", "", "number");
     if (isNaN(seriesEj) || seriesEj <= 0) {
         createBasicWindow("ADVERTENCIA", "Las series deben ser un número válido y positivo.");
         return null;
     }
 
-    const repsEj = parseInt(prompt("Introduce las repeticiones del ejercicio"), 10); // Keep prompt for input for now
+    const repsEj = await createDataWindow("Añadir nuevo ejercicio", "Introduce las repeticiones del ejercicio", "", "", "number");
     if (isNaN(repsEj) || repsEj <= 0) {
         createBasicWindow("ADVERTENCIA", "Las repeticiones deben ser un número válido y positivo.");
         return null;

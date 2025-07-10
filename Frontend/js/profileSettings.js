@@ -4,7 +4,7 @@ import { createBasicWindow } from "/js/ModalWindows/BasicWindow.js";
 import { createConfirmWindow } from "/js/ModalWindows/ConfirmWindow.js";
 import { createDataWindow } from "/js/ModalWindows/DataWindow.js";
 
-async function close_Sesion() {
+export async function close_Sesion() {
     const response = await createConfirmWindow("Cerrar Sesion", "¿Estás seguro de que quieres cerrar sesión?");
     if (response === true) {
         console.log("Usuario confirmó.");

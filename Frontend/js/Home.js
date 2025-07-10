@@ -6,6 +6,7 @@ var userNameSpan = document.getElementById("usernameSpan");
 
 // IMPORTS NECESARIOS
 import { createBasicWindow } from "/js/ModalWindows/BasicWindow.js";
+import { close_Sesion } from "/js/profileSettings.js";
 
 
 // Lista de mensaje motivacionales
@@ -116,14 +117,13 @@ export async function checkLogin() {
             return;
         } else {
             // Redirigir a otra página
-            createBasicWindow("SESIÓN EXPIRADA", "Tu sesión ha expirado o no has iniciado sesión. Por favor, vuelve a iniciar sesión.").then(() => {
-                window.location.href = '/'; // Redirige después de que el usuario cierre la ventana modal
-            });
+            await createBasicWindow("SESIÓN EXPIRADA", "Tu sesión ha expirado o no has iniciado sesión. Por favor, vuelve a iniciar sesión.");
+            window.location.href = '/'; // Redirige después de que el usuario cierre la ventana modal
         }
     } catch (error) {
         console.error('❌ Error de conexión:', error.message);
-        createBasicWindow("ERROR DE CONEXIÓN", "No se pudo conectar con el servidor para verificar la sesión: " + error.message);
+        await createBasicWindow("ERROR DE CONEXIÓN", "No se pudo conectar con el servidor para verificar la sesión: " + error.message);
         // Opcional: Podrías redirigir aquí también si la conexión es crítica
-        // window.location.href = '/'; 
+        window.location.href = '/';
     }
 }

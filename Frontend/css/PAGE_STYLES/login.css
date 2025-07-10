@@ -7,7 +7,7 @@
     height: auto;
 }
 
-#login-user-form {
+.user-form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,7 +19,7 @@
     margin-bottom: 100px;
 }
 
-#login-user-form div {
+.user-form div {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -27,7 +27,7 @@
     width: 100%;
 }
 
-#login-user-form input {
+.user-form input {
     width: 600px;
     height: 30px;
     max-width: 600px;
@@ -44,7 +44,7 @@
     transition: all 0.102s ease-in-out;
 }
 
-#login-user-form input:hover {
+.user-form input:hover {
     box-shadow: 0 2px 4px var(--color-input-focus);
     scale: 1.02;
 }
@@ -53,4 +53,20 @@
     margin: 2rem 0;
     padding: 1rem;
     width: 60%;
+}
+
+@media screen and (max-width: 728px) {
+    .user-form {
+        width: 90%;
+    }
+
+    .user-form input {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .submitButtons {
+        width: 100%;
+    }
+
 }

@@ -17,20 +17,20 @@
     <button id="themeChanger" onclick="changeThemeMode()">
         Light Mode
     </button>
-
-    <header>
-        <span class="logo"></span>
-
-        <div class="left">
-            <nav>
-                <a href="/profile">Perfil 👤</a>
-                <a href="/rutinas">Rutinas 📅</a>
-                <button id="closeSesion" onclick="close_Sesion()">Cerrar Sesion</button>
-
-            </nav>
-        </div>
-    </header>
     <div id="app">
+
+        <header>
+            <span class="logo"></span>
+
+            <div class="left">
+                <nav>
+                    <a href="/profile">Perfil 👤</a>
+                    <a href="/rutinas">Rutinas 📅</a>
+                    <button id="closeSesion">Cerrar Sesion</button>
+
+                </nav>
+            </div>
+        </header>
         <main>
             <h2>Bienvenido/a <span id="usernameSpan"></span> a GymTracker</h2>
             <img id="profileImage" src="/assets/images/defaultProfileImage.webp" alt="profileImage">
@@ -48,17 +48,5 @@
 
 <!-- HOME PAGE MANAGMENT SCRIPTS -->
 <script type="module" src="/js/Home.js"></script>
-<script>
-    function close_Sesion() {
-        if (confirm("Vas a cerrar sesion ¿Estás seguro?")) {
-            // El usuario hizo clic en "Aceptar"
-            console.log("Usuario confirmó.");
-            localStorage.clear();
-        } else {
-            // El usuario hizo clic en "Cancelar"
-            console.log("Usuario canceló.");
-        }
-    }
-</script>
 
 </html>

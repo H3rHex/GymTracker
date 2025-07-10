@@ -1,10 +1,21 @@
-import { createBasicWindow } from "/js/ModalWindows/BasicWindow.js";
+import { createBasicWindow, isModalActive } from "/js/ModalWindows/BasicWindow.js";
 
 async function sendForm(e) {
+    if (isModalActive()) {
+        console.warn("Modal ya activa. No se puede abrir otra.");
+        return;
+    }
+
+    //console.log("Enviando formulario de inicio de sesión...");
     e.preventDefault();
 
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
+
+    /* 
+    console.log("Username:", username);
+    console.log("Password:", password);
+    */
 
     try {
         const response = await fetch("/user_login", {
@@ -15,17 +26,21 @@ async function sendForm(e) {
             body: JSON.stringify({ "username": username, "password": password })
         });
 
+        //console.log("Respuesta del servidor:", response);
+
         if (response.ok) {
             localStorage.setItem("username", username);
             localStorage.setItem("password", password);
             const message = await response.text();
-            showInfoAndRedirect("ÉXITO", message, '/home'); // Usar la función auxiliar
+            await createBasicWindow("ÉXITO", message); // Usar la función auxiliar
+            window.location.href = '/home'; // Redirige a la página de inicio
         } else {
             const errorText = await response.text();
-            createBasicWindow("ERROR", errorText || "Credenciales incorrectas"); // No redirige, así que no se necesita el auxiliar
+            await createBasicWindow("ERROR", errorText || "Credenciales incorrectas"); // No redirige, así que no se necesita el auxiliar
         }
     } catch (err) {
-        createBasicWindow("ERROR", err.message);
+        console.error('❌ Error:', err.message);
+        await createBasicWindow("ERROR", err.message);
     }
 }
 
@@ -50,10 +65,10 @@ async function sendFormRegister(e) {
             showInfoAndRedirect("REGISTRO EXITOSO", "¡Usuario registrado con éxito!", '/home'); // Usar la función auxiliar
         } else {
             const errorText = await response.text();
-            createBasicWindow("ERROR", errorText || "Error al registrar el usuario");
+            await createBasicWindow("ERROR", errorText || "Error al registrar el usuario");
         }
     } catch (err) {
-        createBasicWindow("ERROR", err.message);
+        await createBasicWindow("ERROR", err.message);
     }
 }
 
@@ -74,10 +89,10 @@ async function checkUsernameAvailability(e) {
         if (text.includes("Username disponible")) {
             sendFormRegister(event);
         } else {
-            createBasicWindow("ADVERTENCIA", "❌ Nombre de usuario no disponible");
+            await createBasicWindow("ADVERTENCIA", "❌ Nombre de usuario no disponible");
         }
     } catch (err) {
-        createBasicWindow("ERROR", err.message);
+        await createBasicWindow("ERROR", err.message);
     }
 }
 
@@ -89,7 +104,7 @@ async function checkPasswords(e) {
     const confirmPassword = document.getElementById("confirm_password").value;
 
     if (password !== confirmPassword) {
-        createBasicWindow("ADVERTENCIA", "Las contraseñas no coinciden");
+        await createBasicWindow("ADVERTENCIA", "Las contraseñas no coinciden");
         return false;
     }
     checkUsernameAvailability(event);
@@ -98,6 +113,11 @@ async function checkPasswords(e) {
 async function buttonLogin_registerPage() {
     const username = localStorage.getItem("username");
     const password = localStorage.getItem("password");
+
+
+    if (!username || !password) {
+        return;
+    }
 
     try {
         const response = await fetch("/user_login", {
@@ -112,11 +132,11 @@ async function buttonLogin_registerPage() {
             window.location.href = '/home'; // Redirige directamente, no necesita modal informativa previa
         } else {
             const errorText = await response.text();
-            createBasicWindow("ERROR", errorText || "Credenciales incorrectas");
+            await createBasicWindow("ERROR", errorText || "Credenciales incorrectas");
         }
     } catch (error) {
         console.error('❌ Error:', error.message);
-        createBasicWindow("ERROR", error.message);
+        await createBasicWindow("ERROR", error.message);
     }
 }
 
@@ -125,9 +145,37 @@ function togglePasswordVisibility(buttonElement) {
 
     if (passwordInput.type === "password") {
         passwordInput.type = "text";
-        buttonElement.textContent = "🙈";
+        buttonElement.textContent = "👀";
     } else {
         passwordInput.type = "password";
-        buttonElement.textContent = "👀";
+        buttonElement.textContent = "🙈";
     }
 }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    buttonLogin_registerPage()
+
+    const loginForm = document.getElementById("login-user-form");
+    if (loginForm) {
+        loginForm.addEventListener("submit", sendForm); // Correcto
+    }
+
+    const registerForm = document.getElementById("register-user-form");
+    if (registerForm) {
+        registerForm.addEventListener("submit", checkPasswords); // Correcto
+    }
+
+    // OTHER BUTTONS    
+    const autologinButton = document.getElementById("autoLoginButton");
+    if (autologinButton) {
+        autologinButton.addEventListener("click", buttonLogin_registerPage);
+    }
+
+    const toggleButton = document.getElementsByClassName("toggle-show-password");
+    if (toggleButton) {
+        for (let i = 0; i < toggleButton.length; i++) {
+            toggleButton[i].addEventListener("click", () => togglePasswordVisibility(toggleButton[i]));
+        }
+    }
+});

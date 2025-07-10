@@ -32,7 +32,7 @@
         </header>
         <main>
             <h3>Bienvenido/a a GymTracker – Tu progreso, en un solo lugar.</h3>
-            <div class="card">
+            <div class="card card-info">
                 <h2>¿Aún no tienes cuenta?</h2>
                 <p>Únete gratis y empieza a registrar tu progreso en el gym. Visualiza tu evolución y mantente motivado
                     cada
@@ -40,7 +40,7 @@
                 <a href="/register" class="btn">Registrarse</a>
             </div>
 
-            <div>
+            <div class="card-info">
                 <section>
                     <h3>🏋️‍♀️ ¿Qué es GymTracker?</h3>
                     <p><strong>GymTracker</strong>es tu compañero personal de entrenamiento.</p>
@@ -68,6 +68,7 @@
 <script src="/js/changeThemeMode.js"></script>
 <script type="module">
     import { createBasicWindow } from "/js/ModalWindows/BasicWindow.js";
+    import { createDataWindow } from "/js/ModalWindows/DataWindow.js";
 
     document.addEventListener("DOMContentLoaded", () => {
         if (localStorage.getItem("username") !== null && localStorage.getItem("password") !== null) {

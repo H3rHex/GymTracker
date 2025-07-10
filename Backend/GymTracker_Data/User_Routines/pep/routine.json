@@ -1,0 +1,29 @@
+{
+  "username" : "pep",
+  "isPublic" : false,
+  "lunes" : {
+    "ejercicios" : [ {
+      "nombre" : "Press Banca",
+      "series" : 3,
+      "repeticiones" : 3
+    } ]
+  },
+  "martes" : {
+    "ejercicios" : [ ]
+  },
+  "miercoles" : {
+    "ejercicios" : [ ]
+  },
+  "jueves" : {
+    "ejercicios" : [ ]
+  },
+  "viernes" : {
+    "ejercicios" : [ ]
+  },
+  "sabado" : {
+    "ejercicios" : [ ]
+  },
+  "domingo" : {
+    "ejercicios" : [ ]
+  }
+}

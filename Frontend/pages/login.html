@@ -22,16 +22,16 @@
             <span class="logo"></span>
 
             <!--FORMULARIO LOGIN-->
-            <form id="login-user-form" onsubmit="sendForm(event)">
+            <form id="login-user-form" class="user-form">
                 <div>
-                    <input id="username" type="text" name="username" placeholder="Nombre de Usuario" required />
+                    <input id="username" type="text" name="username" placeholder="Nombre de Usuario" required
+                        autocomplete="username" />
                 </div>
-
                 <div>
-                    <input id="password" type="password" name="password" placeholder="Contraseña" required />
-                    <span id="toggle-show-password" onclick="togglePasswordVisibility(this)">🙈</span>
+                    <input id="password" type="password" name="password" placeholder="Contraseña" required
+                        autocomplete="current-password" />
+                    <span type="button" class="toggle-show-password">🙈</span>
                 </div>
-
                 <button class="submitButtons" type="submit">Iniciar Sesión</button>
             </form>
 

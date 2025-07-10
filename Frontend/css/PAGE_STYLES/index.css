@@ -5,3 +5,14 @@
     color: var(--color-text-primary);
     overflow-x: hidden;
 }
+
+@media screen and (max-width: 728px) {
+    main h3 {
+        font-size: 1.15rem;
+        padding: 0.5rem;
+    }
+
+    .card-info {
+        padding: 1rem;
+    }
+}

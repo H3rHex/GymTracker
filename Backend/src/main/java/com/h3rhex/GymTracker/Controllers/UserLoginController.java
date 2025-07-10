@@ -31,7 +31,7 @@ public class UserLoginController {
         User user = readUserData.findUserByCredentials(username, password);
 
         if (user != null) {
-           // System.out.println("✅ Login exitoso para el usuario: " + user.getUsername());
+            //System.out.println("✅ Login exitoso para el usuario: " + user.getUsername());
             return ResponseEntity.ok("Login correcto. Bienvenido " + user.getUsername());
         } else {
             System.out.println("❌ Login fallido. Credenciales inválidas para usuario: " + username);

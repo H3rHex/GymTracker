@@ -217,6 +217,12 @@ header .left {
     justify-content: flex-start;
 }
 
+header .left nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
 header a {
     color: var(--color-text-primary);
     text-decoration: none;
@@ -374,14 +380,13 @@ a:hover {
     background-size: cover;
     width: 180px;
     height: 180px;
-
 }
 
 #closeSesion:hover {
     background-color: rgb(255, 72, 72);
 }
 
-#toggle-show-password {
+.toggle-show-password {
     margin: 10px;
     padding: 0.5rem;
 
@@ -401,7 +406,7 @@ a:hover {
     transition: all 0.2s ease-in-out;
 }
 
-#toggle-show-password:hover {
+.toggle-show-password:hover {
     transform: scale(1.1);
     filter: drop-shadow(0 2px 4px var(--color-input-border));
 }
@@ -506,4 +511,60 @@ a:hover {
     header {
         width: 70%;
     }
+}
+
+
+/* 425px Moviles Pequeños*/
+@media screen and (max-width: 728px) {
+    header {
+        flex-direction: column;
+        width: 70%;
+    }
+
+    header .left {
+        justify-content: center;
+
+        margin-bottom: 10px;
+    }
+
+    header a {
+        width: 100px;
+        text-align: center;
+    }
+
+    .card {
+        width: 70%;
+        height: auto;
+    }
+
+
+    .logo {
+        background-image: var(--logo-image);
+        background-size: cover;
+        width: 100px;
+        height: 100px;
+    }
+
+    #themeChanger {
+        position: fixed;
+        top: 2rem;
+        right: 1rem;
+
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+
+        font-size: 1.3rem;
+        text-align: center;
+
+        filter: drop-shadow(0 2px 4px var(--color-border-divider));
+    }
+
+    /*MODALS*/
+    .modalWindow {
+        width: 80%;
+        padding: 1rem;
+    }
+
+
 }

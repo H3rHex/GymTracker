@@ -17,106 +17,129 @@
     <button id="themeChanger" onclick="changeThemeMode()">
         Light Mode
     </button>
+    <div id="app">
+        <header>
+            <span class="logo"></span>
 
-    <header>
-        <span class="logo"></span>
+            <div class="left">
+                <nav>
+                    <a href="/home">Pagina Principal</a>
+                    <a href="/profile">Perfil 👤</a>
 
-        <div class="left">
-            <nav>
-                <a href="/home">Pagina Principal</a>
-                <a href="/profile">Perfil 👤</a>
-
-            </nav>
-        </div>
-    </header>
-
-    <main>
-        <a href="#routineContainer"> ⬇️ Ir a Rutina Semanal ⬇️ </a>
-
-        <div class="card" id="">
-            <table>
-                <h2>RESUMEN SEMANAL</h2>
-                <thead>
-                    <tr>
-                        <th>Día</th>
-                        <th>Ejercicio Principal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr id="fila-dia-lunes" class="fila-dia">
-                        <td>Lunes</td>
-                        <td><input type="text" id="lunes" class="ejercicio" disabled></td>
-                    </tr>
-                    <tr id="fila-dia-martes" class="fila-dia">
-                        <td>Martes</td>
-                        <td><input type="text" id="martes" class="ejercicio" disabled></td>
-                    </tr>
-                    <tr id="fila-dia-miercoles" class="fila-dia">
-                        <td>Miércoles</td>
-                        <td><input type="text" id="miercoles" class="ejercicio" disabled></td>
-                    </tr>
-                    <tr id="fila-dia-jueves" class="fila-dia">
-                        <td>Jueves</td>
-                        <td><input type="text" id="jueves" class="ejercicio" disabled></td>
-                    </tr>
-                    <tr id="fila-dia-viernes" class="fila-dia">
-                        <td>Viernes</td>
-                        <td><input type="text" id="viernes" class="ejercicio" disabled></td>
-                    </tr>
-                    <tr id="fila-dia-sabado" class="fila-dia">
-                        <td>Sábado</td>
-                        <td><input type="text" id="sabado" class="ejercicio" disabled></td>
-                    </tr>
-                    <tr id="fila-dia-domingo" class="fila-dia">
-                        <td>Domingo</td>
-                        <td><input type="text" id="domingo" class="ejercicio" disabled></td>
-                    </tr>
-                </tbody>
-            </table>
-            <button onclick="handleEditModeCalendar(event)" data-editing="false">Editar Calendario</button>
-        </div>
-        <div id="routineContainer" data-isPublic="false">
-            <h1>🗓️ Rutina semanal</h1>
-            <table id="tabla-rutina">
-                <thead>
-                    <tr>
-                        <th>Lunes</th>
-                        <th>Martes</th>
-                        <th>Miércoles</th>
-                        <th>Jueves</th>
-                        <th>Viernes</th>
-                        <th>Sábado</th>
-                        <th>Domingo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td id="dia-lunes"></td>
-                        <td id="dia-martes"></td>
-                        <td id="dia-miercoles"></td>
-                        <td id="dia-jueves"></td>
-                        <td id="dia-viernes"></td>
-                        <td id="dia-sabado"></td>
-                        <td id="dia-domingo"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div>
-                <button onclick="handleEditModeRoutine(event)" id="editModeRoutineBtn" data-editing="false">Editar
-                    Rutina</button>
-                <button onclick="addEjToCelda()" id="addEjerciosBTN" data-editing="false">Añadir Ejercicio</button>
-                <button onclick="visibilityMode()" id="handleVisibilityBtn" data-editing="false">Privada</button>
+                </nav>
             </div>
+        </header>
 
-        </div>
-    </main>
+        <main>
+            <a data-target="routineContainer" id="scrollToSectionButton"> ⬇️ Ir a Rutina Semanal ⬇️ </a>
+
+            <div class="card" id="">
+                <table>
+                    <h2>RESUMEN SEMANAL</h2>
+                    <thead>
+                        <tr>
+                            <th>Día</th>
+                            <th>Ejercicio Principal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="fila-dia-lunes" class="fila-dia">
+                            <td>Lunes</td>
+                            <td><input type="text" id="lunes" class="ejercicio" disabled></td>
+                        </tr>
+                        <tr id="fila-dia-martes" class="fila-dia">
+                            <td>Martes</td>
+                            <td><input type="text" id="martes" class="ejercicio" disabled></td>
+                        </tr>
+                        <tr id="fila-dia-miercoles" class="fila-dia">
+                            <td>Miércoles</td>
+                            <td><input type="text" id="miercoles" class="ejercicio" disabled></td>
+                        </tr>
+                        <tr id="fila-dia-jueves" class="fila-dia">
+                            <td>Jueves</td>
+                            <td><input type="text" id="jueves" class="ejercicio" disabled></td>
+                        </tr>
+                        <tr id="fila-dia-viernes" class="fila-dia">
+                            <td>Viernes</td>
+                            <td><input type="text" id="viernes" class="ejercicio" disabled></td>
+                        </tr>
+                        <tr id="fila-dia-sabado" class="fila-dia">
+                            <td>Sábado</td>
+                            <td><input type="text" id="sabado" class="ejercicio" disabled></td>
+                        </tr>
+                        <tr id="fila-dia-domingo" class="fila-dia">
+                            <td>Domingo</td>
+                            <td><input type="text" id="domingo" class="ejercicio" disabled></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button id="editModeCalendarBtn" data-editing="false">Editar Calendario</button>
+            </div>
+            <div id="routineContainer" data-isPublic="false">
+                <h1>🗓️ Rutina semanal</h1>
+                <table id="tabla-rutina">
+                    <thead>
+                        <tr>
+                            <th>Lunes</th>
+                            <th>Martes</th>
+                            <th>Miércoles</th>
+                            <th>Jueves</th>
+                            <th>Viernes</th>
+                            <th>Sábado</th>
+                            <th>Domingo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="dia-lunes"></td>
+                            <td id="dia-martes"></td>
+                            <td id="dia-miercoles"></td>
+                            <td id="dia-jueves"></td>
+                            <td id="dia-viernes"></td>
+                            <td id="dia-sabado"></td>
+                            <td id="dia-domingo"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <button id="editModeRoutineBtn" data-editing="false">Editar Rutina</button>
+                    <button id="addEjerciosBTN" data-editing="false">Añadir Ejercicio</button>
+                </div>
+
+            </div>
+        </main>
+
+
+    </div>
 
     <!-- Scripts -->
     <script src="/js/changeThemeMode.js"></script>
     <script type="module" src="/js/Routine.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const scrollButton = document.getElementById('scrollToSectionButton');
 
-    <!--z HOME PAGE MANAGMENT SCRIPTS 
-            <script src="/js/Home.js"></script> 
-        -->
+            if (scrollButton) {
+                scrollButton.addEventListener('click', () => {
+                    const targetId = scrollButton.getAttribute('data-target');
+                    let targetElement = null;
+
+                    if (targetId) { // Si el atributo data-target existe
+                        targetElement = document.getElementById(targetId);
+                    }
+
+                    // Solo procede si encontramos tanto el botón como el elemento de destino válido
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth', // Hace el scroll suave
+                            block: 'start'      // Alinea la parte superior del elemento con la parte superior de la ventana visible
+                        });
+                    } else {
+                        console.warn(`Advertencia: El elemento de destino con ID '${targetId || "no especificado"}' no fue encontrado.`);
+                    }
+                });
+            }
+        });
+    </script>
 
 </html>
