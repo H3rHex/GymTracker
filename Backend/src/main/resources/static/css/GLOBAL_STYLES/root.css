@@ -218,8 +218,10 @@ header .left {
 }
 
 header .left nav {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     gap: 10px;
 }
 
@@ -411,6 +413,10 @@ a:hover {
     filter: drop-shadow(0 2px 4px var(--color-input-border));
 }
 
+#scrollToSectionButton {
+    cursor: pointer;
+}
+
 /* --- ESTILOS GENERALES DE LA VENTANA MODAL --- */
 .modalWindow {
     position: fixed;
@@ -514,8 +520,8 @@ a:hover {
 }
 
 
-/* 425px Moviles Pequeños*/
-@media screen and (max-width: 728px) {
+/* max-width: 768px Moviles Pequeño*/
+@media screen and (max-width: 769px) {
     header {
         flex-direction: column;
         width: 70%;
@@ -523,8 +529,14 @@ a:hover {
 
     header .left {
         justify-content: center;
-
         margin-bottom: 10px;
+    }
+
+
+    header .left nav {
+        flex-direction: column;
+        align-items: flex-start;
+
     }
 
     header a {
@@ -536,7 +548,6 @@ a:hover {
         width: 70%;
         height: auto;
     }
-
 
     .logo {
         background-image: var(--logo-image);

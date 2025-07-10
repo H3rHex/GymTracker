@@ -6,10 +6,18 @@ document.addEventListener("DOMContentLoaded", () => {
     loadCalendarData();
     loadRoutineData();
     highLigthDay();
+    updateCarouselDisplay();
+
 
     if (!localStorage.getItem("routineEditingMode")) {
         localStorage.setItem("routineEditingMode", false);
         localStorage.setItem("routineIsPublic", false);
+    } else {
+        localStorage.setItem("routineEditingMode", false);
+    }
+
+    if (!localStorage.getItem("carruselIndex")) {
+        localStorage.setItem("carruselIndex", 0);
     }
 
     const editCalendarBtn = document.getElementById("editModeCalendarBtn");
@@ -27,9 +35,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (addEjerciciosBtn) {
         addEjerciciosBtn.addEventListener("click", addEjToCelda);
     }
+
+    /* CARRUSEL DIRECTION BUTTONS */
+    const previousDayBtn = document.getElementById("previousDayBtn");
+    if (previousDayBtn) {
+        previousDayBtn.addEventListener("click", moveLeft);
+    }
+    const nextDayBtn = document.getElementById("nextDayBtn");
+    if (nextDayBtn) {
+        nextDayBtn.addEventListener("click", moveRight);
+    }
 });
 
 // RESUMEN GENERAL //
+const dias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
+
 
 function highLigthDay() {
     const opciones = { weekday: 'long' };
@@ -130,8 +150,9 @@ async function saveCalendar() {
 
 
 function generarCalendarioDesdeInputs() {
-    const dias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
     const calendarioActualizado = { username: localStorage.getItem("username") };
+
+    // const dias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"]; Constante global definida al inicio del archivo
 
     dias.forEach(dia => {
         const input = document.getElementById(dia);
@@ -362,7 +383,7 @@ async function addEjToCelda() { // Changed to async because createBasicWindow is
         return null;
     }
 
-    const dia = await createDataWindow("Añadir nuevo ejercicio", "Introduce el día al que quieres agregar el ejercicio", "", "", "text");
+    const dia = await createDataWindow("Añadir nuevo ejercicio", "Introduce el día al que quieres agregar el ejercicio", "text");
     if (dia === null) { // User clicked cancel on prompt
         console.log("Usuario canceló la introducción del día.");
         return null;
@@ -383,19 +404,19 @@ async function addEjToCelda() { // Changed to async because createBasicWindow is
         return;
     }
 
-    const nameEj = await createDataWindow("Añadir nuevo ejercicio", "Introduce el nombre del ejercicio", "", "", "text");
+    const nameEj = await createDataWindow("Añadir nuevo ejercicio", "Introduce el nombre del ejercicio", "text");
     if (nameEj === null || nameEj.trim() === "") {
         createBasicWindow("ADVERTENCIA", "El nombre del ejercicio no puede estar vacío.");
         return null;
     }
 
-    const seriesEj = await createDataWindow("Añadir nuevo ejercicio", "Introduce las series del ejercicio", "", "", "number");
+    const seriesEj = await createDataWindow("Añadir nuevo ejercicio", "Introduce las series del ejercicio", "number");
     if (isNaN(seriesEj) || seriesEj <= 0) {
         createBasicWindow("ADVERTENCIA", "Las series deben ser un número válido y positivo.");
         return null;
     }
 
-    const repsEj = await createDataWindow("Añadir nuevo ejercicio", "Introduce las repeticiones del ejercicio", "", "", "number");
+    const repsEj = await createDataWindow("Añadir nuevo ejercicio", "Introduce las repeticiones del ejercicio", "number");
     if (isNaN(repsEj) || repsEj <= 0) {
         createBasicWindow("ADVERTENCIA", "Las repeticiones deben ser un número válido y positivo.");
         return null;
@@ -519,8 +540,7 @@ function createRoutineJson() {
     const is_public = localStorage.getItem("routineIsPublic");
     let routine = { "username": username, "isPublic": is_public };
 
-    const dias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
-
+    // const dias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"]; Constante global definida al inicio del archivo
     dias.forEach(day => {
         const dayData = getDayRoutine(day);
 
@@ -560,4 +580,87 @@ async function saveNewRoutine() {
         console.error("❌ Error en la petición:", error);
         createBasicWindow("ERROR", "❌ Error de conexión al guardar la rutina.");
     }
+}
+
+/* LITLE SCREENS CARRUSEL */
+function isMobileView() {
+    return window.matchMedia("(max-width: 769px)").matches;
+}
+
+function updateCarouselDisplay(direction = 0) {
+    // Referencia a los elementos de navegación móvil
+    const currentDayDisplayElement = document.getElementById('currentDayDisplay'); // Para actualizar el texto del día
+
+    // Lógica para cuando NO estamos en vista móvil
+    if (!isMobileView()) {
+        console.log("No estás en una pantalla pequeña. Restableciendo vista de escritorio.");
+
+        // Quitar las clases 'visible' y 'no-visible' de TODOS los th y td
+        // Esto permite que el CSS de escritorio los muestre todos
+        dias.forEach(day => {
+            const thElement = document.getElementById(`th-${day}`);
+            const tdElement = document.getElementById(`dia-${day}`);
+            if (thElement) thElement.classList.remove("visible", "no-visible");
+            if (tdElement) tdElement.classList.remove("visible", "no-visible");
+        });
+        return; // Salir de la función si no es vista móvil
+    }
+
+    // --- Lógica para VISTA MÓVIL (si se llega a este punto) ---
+
+    // Obtener el índice actual desde localStorage. Si no existe, inicializar a 0.
+    let currentDayIndex = parseInt(localStorage.getItem("carruselIndex")) || 0;
+    console.log("Días de la semana:", dias); // Usar dias aquí
+    console.log("Índice del día actual (leído de localStorage):", currentDayIndex);
+
+    // Calcular el nuevo índice basado en la dirección (solo si se ha pasado una dirección)
+    if (direction !== 0) {
+        currentDayIndex = (currentDayIndex + direction + dias.length) % dias.length;
+    }
+
+    // *** Guardar el nuevo índice en localStorage ***
+    localStorage.setItem("carruselIndex", currentDayIndex.toString());
+    console.log("Nuevo Índice del día guardado en localStorage:", currentDayIndex);
+
+
+    // Ocultar todos los th y td aplicando la clase "no-visible"
+    dias.forEach(day => {
+        const thElement = document.getElementById(`th-${day}`);
+        const tdElement = document.getElementById(`dia-${day}`);
+        if (thElement) {
+            thElement.classList.remove("visible"); // Asegurarse de que no tenga visible
+            thElement.classList.add("no-visible");
+        }
+        if (tdElement) {
+            tdElement.classList.remove("visible"); // Asegurarse de que no tenga visible
+            tdElement.classList.add("no-visible");
+        }
+    });
+
+    // Mostrar solo el th y td del día actual aplicando la clase "visible"
+    const thElementToShow = document.getElementById(`th-${dias[currentDayIndex]}`);
+    if (thElementToShow) {
+        console.log("Elemento TH a mostrar:", thElementToShow);
+        thElementToShow.classList.remove("no-visible"); // Quitar no-visible
+        thElementToShow.classList.add("visible");
+    }
+    const tdElementToShow = document.getElementById(`dia-${dias[currentDayIndex]}`);
+    if (tdElementToShow) {
+        console.log("Elemento TD a mostrar:", tdElementToShow);
+        tdElementToShow.classList.remove("no-visible"); // Quitar no-visible
+        tdElementToShow.classList.add("visible");
+    }
+
+    // Actualizar el texto del día actual en la UI
+    if (currentDayDisplayElement) {
+        currentDayDisplayElement.textContent = dias[currentDayIndex].charAt(0).toUpperCase() + dias[currentDayIndex].slice(1);
+    }
+}
+
+function moveLeft() {
+    updateCarouselDisplay(-1); // Llama a la función principal con dirección -1
+}
+
+function moveRight() {
+    updateCarouselDisplay(1); // Llama a la función principal con dirección 1
 }

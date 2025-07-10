@@ -32,3 +32,16 @@
         background-position: 0% 0%;
     }
 }
+
+@media screen and (max-width: 768px) {
+    #profileImage {
+        width: 80px;
+        height: 80px;
+    }
+
+    #dayMessage {
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+}

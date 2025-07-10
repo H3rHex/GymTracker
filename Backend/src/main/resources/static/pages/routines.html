@@ -77,16 +77,21 @@
             </div>
             <div id="routineContainer" data-isPublic="false">
                 <h1>🗓️ Rutina semanal</h1>
+                <div class="carruselButtonsContainer">
+                    <button id="previousDayBtn" class="carruselButton">◀️</button>
+                    <button id="nextDayBtn" class="carruselButton">▶️</button>
+                </div>
+
                 <table id="tabla-rutina">
                     <thead>
                         <tr>
-                            <th>Lunes</th>
-                            <th>Martes</th>
-                            <th>Miércoles</th>
-                            <th>Jueves</th>
-                            <th>Viernes</th>
-                            <th>Sábado</th>
-                            <th>Domingo</th>
+                            <th id="th-lunes">Lunes</th>
+                            <th id="th-martes">Martes</th>
+                            <th id="th-miercoles">Miércoles</th>
+                            <th id="th-jueves">Jueves</th>
+                            <th id="th-viernes">Viernes</th>
+                            <th id="th-sabado">Sábado</th>
+                            <th id="th-domingo">Domingo</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -105,7 +110,6 @@
                     <button id="editModeRoutineBtn" data-editing="false">Editar Rutina</button>
                     <button id="addEjerciosBTN" data-editing="false">Añadir Ejercicio</button>
                 </div>
-
             </div>
         </main>
 

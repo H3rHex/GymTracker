@@ -55,7 +55,7 @@
     width: 60%;
 }
 
-@media screen and (max-width: 728px) {
+@media screen and (max-width: 768px) {
     .user-form {
         width: 90%;
     }

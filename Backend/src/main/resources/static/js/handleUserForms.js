@@ -62,7 +62,8 @@ async function sendFormRegister(e) {
         if (response.ok) {
             localStorage.setItem("username", username);
             localStorage.setItem("password", password);
-            showInfoAndRedirect("REGISTRO EXITOSO", "¡Usuario registrado con éxito!", '/home'); // Usar la función auxiliar
+            await createBasicWindow("REGISTRO EXITOSO", "¡Usuario registrado con éxito!"); // Usar la función auxiliar
+            window.location.href = '/home'; // Redirige a la página de inicio
         } else {
             const errorText = await response.text();
             await createBasicWindow("ERROR", errorText || "Error al registrar el usuario");
@@ -110,7 +111,7 @@ async function checkPasswords(e) {
     checkUsernameAvailability(event);
 }
 
-async function buttonLogin_registerPage() {
+async function autoLogin() {
     const username = localStorage.getItem("username");
     const password = localStorage.getItem("password");
 
@@ -154,8 +155,7 @@ function togglePasswordVisibility(buttonElement) {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    buttonLogin_registerPage()
-
+    autoLogin(); // Intenta iniciar sesión automáticamente al cargar la página
     const loginForm = document.getElementById("login-user-form");
     if (loginForm) {
         loginForm.addEventListener("submit", sendForm); // Correcto
@@ -164,12 +164,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const registerForm = document.getElementById("register-user-form");
     if (registerForm) {
         registerForm.addEventListener("submit", checkPasswords); // Correcto
-    }
-
-    // OTHER BUTTONS    
-    const autologinButton = document.getElementById("autoLoginButton");
-    if (autologinButton) {
-        autologinButton.addEventListener("click", buttonLogin_registerPage);
     }
 
     const toggleButton = document.getElementsByClassName("toggle-show-password");

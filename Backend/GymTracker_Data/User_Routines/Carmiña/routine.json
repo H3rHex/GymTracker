@@ -1,0 +1,89 @@
+{
+  "username" : "Carmiña",
+  "isPublic" : false,
+  "lunes" : {
+    "ejercicios" : [ ]
+  },
+  "martes" : {
+    "ejercicios" : [ {
+      "nombre" : "Dominadas",
+      "series" : 3,
+      "repeticiones" : 8
+    }, {
+      "nombre" : "Fondos en Paralelas",
+      "series" : 3,
+      "repeticiones" : 10
+    }, {
+      "nombre" : "PressPucio",
+      "series" : 12,
+      "repeticiones" : 123
+    } ]
+  },
+  "miercoles" : {
+    "ejercicios" : [ {
+      "nombre" : "Peso Muerto Rumano",
+      "series" : 3,
+      "repeticiones" : 10
+    }, {
+      "nombre" : "Prensa de Piernas",
+      "series" : 4,
+      "repeticiones" : 12
+    }, {
+      "nombre" : "Curl de Bíceps",
+      "series" : 3,
+      "repeticiones" : 12
+    }, {
+      "nombre" : "Extensiones de Tríceps",
+      "series" : 3,
+      "repeticiones" : 15
+    } ]
+  },
+  "jueves" : {
+    "ejercicios" : [ {
+      "nombre" : "Descanso",
+      "series" : 0,
+      "repeticiones" : 0
+    } ]
+  },
+  "viernes" : {
+    "ejercicios" : [ {
+      "nombre" : "Press Inclinado con Mancuernas",
+      "series" : 3,
+      "repeticiones" : 10
+    }, {
+      "nombre" : "Jalón al Pecho",
+      "series" : 4,
+      "repeticiones" : 10
+    }, {
+      "nombre" : "Elevaciones Laterales",
+      "series" : 3,
+      "repeticiones" : 15
+    }, {
+      "nombre" : "Curl Femoral",
+      "series" : 3,
+      "repeticiones" : 12
+    } ]
+  },
+  "sabado" : {
+    "ejercicios" : [ {
+      "nombre" : "Zancadas Caminando",
+      "series" : 3,
+      "repeticiones" : 10
+    }, {
+      "nombre" : "Push Ups",
+      "series" : 3,
+      "repeticiones" : 15
+    }, {
+      "nombre" : "Plancha",
+      "series" : 3,
+      "repeticiones" : 60
+    } ]
+  },
+  "domingo" : {
+    "ejercicios" : [ {
+      "nombre" : "Descanso",
+      "series" : 0,
+      "repeticiones" : 0
+    } ]
+  }
+}

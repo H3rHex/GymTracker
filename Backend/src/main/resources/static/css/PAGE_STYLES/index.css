@@ -6,7 +6,7 @@
     overflow-x: hidden;
 }
 
-@media screen and (max-width: 728px) {
+@media screen and (max-width: 768px) {
     main h3 {
         font-size: 1.15rem;
         padding: 0.5rem;

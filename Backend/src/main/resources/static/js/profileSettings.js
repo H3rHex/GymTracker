@@ -30,7 +30,7 @@ async function delete_account() {
 
     let password = null;
     while (!password) {
-        password = await createDataWindow("Eliminar Cuenta", "Introduce tu contraseña, por favor;", "", "", "password");
+        password = await createDataWindow("Eliminar Cuenta", "Introduce tu contraseña, por favor;", "password");
         console.log(password);
         if (password === null) {
             createBasicWindow("ERROR", "No se puede continuar sin ingresar la contraseña.");
@@ -106,7 +106,7 @@ async function changeUsername() {
     // Solicitar contraseña
     let password = null;
     while (!password) {
-        password = await createDataWindow("Cambiar nombre de usuario", "Introduce tu contraseña, por favor;", "", "", "password");
+        password = await createDataWindow("Cambiar nombre de usuario", "Introduce tu contraseña, por favor;", "password");
         if (password === null) {
             createBasicWindow("ERROR", "No se puede continuar sin ingresar la contraseña.");
             return;
@@ -141,7 +141,7 @@ async function changeUsername() {
     // Solicitar nuevo nombre de usuario
     let newUsername = null;
     while (!newUsername) {
-        newUsername = await createDataWindow("Cambiar nombre de usuario", "Introduce tu nuevo nombre de usuario, por favor;", "", "", "text");
+        newUsername = await createDataWindow("Cambiar nombre de usuario", "Introduce tu nuevo nombre de usuario, por favor;", "text");
         if (newUsername === null) {
             createBasicWindow("ERROR", "Es necesario introducir un nuevo nombre de usuario para continuar.");
             return;
@@ -210,7 +210,7 @@ async function changePassword() {
 
     let password = null;
     while (!password) {
-        password = await createDataWindow("Cambiar contraseña", "Introduce tu contraseña, por favor;", "", "", "password");
+        password = await createDataWindow("Cambiar contraseña", "Introduce tu contraseña, por favor;", "password");
         if (password === null) {
             createBasicWindow("ERROR", "No se puede continuar sin ingresar la contraseña.");
             return;
@@ -241,7 +241,7 @@ async function changePassword() {
     // Solicitar nueva contraseña
     let newPassword = null;
     while (!newPassword) {
-        newPassword = await createDataWindow("Cambiar contraseña", "Por favor, introduce tu nueva contraseña:", "", "", "password");
+        newPassword = await createDataWindow("Cambiar contraseña", "Por favor, introduce tu nueva contraseña:", "password");
         if (newPassword === null) {
             createBasicWindow("ERROR", "Es necesario introducir una nueva contraseña para continuar.");
             return;

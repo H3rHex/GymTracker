@@ -1,12 +1,7 @@
 export class DataWindow {
-    constructor(title, message, width, height, dataType) {
+    constructor(title, message, dataType) {
         this.title = title;
         this.message = message;
-        this.width = parseInt(width, 10);
-        this.height = parseInt(height, 10);
-
-        if (isNaN(this.width)) { this.width = 400; }
-        if (isNaN(this.height)) { this.height = 250; }
 
         this.dataType = dataType;
         this.data = null;
@@ -30,8 +25,6 @@ export class DataWindow {
         container.classList.add('modalWindow', 'dataWindow');
         windowElement.appendChild(container);
 
-        container.style.width = `${this.width}px`;
-        container.style.height = `${this.height}px`;
         // Asegúrate de que el modal esté sobre el overlay
         container.style.zIndex = '999999';
         container.style.position = 'absolute';

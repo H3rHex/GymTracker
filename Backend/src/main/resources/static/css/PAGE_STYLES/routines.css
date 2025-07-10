@@ -178,6 +178,16 @@ button[data-editing="true"] {
     border: solid 1px var(--color-success-border)
 }
 
+.delEjButton[data-editing="false"] {
+    position: absolute;
+    visibility: hidden;
+}
+
+.carruselButtonsContainer {
+    display: none;
+}
+
+/* ANIMACIONES */
 @keyframes desaparecer {
     0% {
         position: relative;
@@ -191,7 +201,96 @@ button[data-editing="true"] {
     }
 }
 
-.delEjButton[data-editing="false"] {
-    position: absolute;
-    visibility: hidden;
+@keyframes aparecer {
+    0% {
+        opacity: 0%;
+        visibility: hidden;
+    }
+
+    100% {
+        opacity: 100%;
+        visibility: visible;
+    }
+}
+
+/* --- MEDIA QUERIES para Móviles --- */
+@media screen and (max-width: 769px) {
+    #scrollToSectionButton {
+        visibility: hidden;
+        /* Esto está bien si lo quieres ocultar */
+    }
+
+    main {
+        flex-direction: column;
+    }
+
+    .carruselButtonsContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    #routineContainer {
+        width: calc(100% - 2rem);
+        padding: 1rem;
+        margin: 1rem auto;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    #tabla-rutina {
+        min-width: unset;
+        /* Quita el min-width forzado */
+        overflow-x: hidden;
+        /* Evita el scroll horizontal de la tabla misma */
+        width: 100%;
+        /* La tabla ocupa todo el ancho de su contenedor */
+    }
+
+    /* Hacer que thead, tbody y tr se comporten como bloques para apilar */
+    #tabla-rutina thead,
+    #tabla-rutina tbody {
+        display: block;
+        width: 100%;
+    }
+
+    #tabla-rutina thead tr,
+    #tabla-rutina tbody tr {
+        display: block;
+        width: 100%;
+    }
+
+    /* Estilos para celdas ocultas */
+    #tabla-rutina th.no-visible,
+    #tabla-rutina td.no-visible {
+        display: none;
+    }
+
+    /* Estilos para la celda visible */
+    #tabla-rutina th.visible,
+    #tabla-rutina td.visible {
+        animation: aparecer 0.3s ease-out forwards;
+        display: table-cell;
+        /* ¡Crucial! Vuelve a comportarse como una celda de tabla */
+        width: 100%;
+        /* Ocupa todo el ancho de la tabla */
+        padding: 12px;
+        /* Restaura tu padding deseado */
+        border: 1px solid var(--color-border-divider);
+        /* Restaura el borde si lo tenías */
+
+        /* Para centrar el contenido de la celda */
+        text-align: center;
+        /* Centra el texto y elementos inline */
+        vertical-align: top;
+        /* Mantiene la alineación vertical arriba */
+
+        /* Centrar h3 dentro del td visible */
+        #tabla-rutina tbody td.visible h3 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    }
 }
