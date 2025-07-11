@@ -1,7 +1,5 @@
-{
-    "1": {
-        "password": "123",
-        "id": 2,
-        "username": "admin"
-    }
-}
+{"1": {
+    "password": "$2a$10$aLKSvPu64.y/AGNGgFD.M.SGd1EGBdUzKRFD7w3jNl8pxlwqQ9b3O",
+    "id": 1,
+    "username": "admin"
+}}

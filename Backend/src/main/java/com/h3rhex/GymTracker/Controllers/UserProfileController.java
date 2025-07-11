@@ -4,6 +4,7 @@ import com.h3rhex.GymTracker.DTOs.NewPasswordDTO;
 import com.h3rhex.GymTracker.DTOs.NewUsernameDTO;
 import com.h3rhex.GymTracker.DTOs.UsernameDTO;
 import com.h3rhex.GymTracker.Services.WriteUserData;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,7 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserProfileController {
-    private final WriteUserData writeUserData = new WriteUserData();
+    private final WriteUserData writeUserData;
+
+    @Autowired
+    public UserProfileController(WriteUserData writeUserData){
+        this.writeUserData = writeUserData;
+    }
 
     @PostMapping("/change_username")
     public ResponseEntity<?> changeUsername(@RequestBody NewUsernameDTO newUsernameDTO) {

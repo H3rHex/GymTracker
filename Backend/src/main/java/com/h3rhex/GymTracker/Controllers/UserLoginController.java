@@ -6,6 +6,7 @@ import com.h3rhex.GymTracker.DTOs.LoginDTO;
 import com.h3rhex.GymTracker.Models.User;
 import com.h3rhex.GymTracker.Services.ReadUserData;
 import com.h3rhex.GymTracker.Services.WriteUserData;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,9 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserLoginController {
-    private final ReadUserData readUserData = new ReadUserData();
-    private final WriteUserData writeUserData = new WriteUserData();
+    private final ReadUserData readUserData;
+    private final WriteUserData writeUserData;
 
+    @Autowired
+    public UserLoginController(ReadUserData readUserData, WriteUserData writeUserData) {
+        this.readUserData = readUserData;
+        this.writeUserData = writeUserData;
+    }
     /*
        Captura la petition POST con ENDPOINT (/user_login) este método se encarga de gestionar esta llamada
        comprobar que las credenciales introducidas en el paquete enviado por el formulario son correctas

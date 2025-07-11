@@ -3,11 +3,15 @@ package com.h3rhex.GymTracker.Services;
 import com.h3rhex.GymTracker.Config.FileManager;
 import com.h3rhex.GymTracker.Models.User;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.Iterator;
 
+@Component // Indica a Spring que esta clase es un componente y debe ser gestionada.
 public class WriteUserData {
     private static final String FILE_PATH = FileManager.UserDataJson();
     private static  final Path path;
@@ -17,7 +21,16 @@ public class WriteUserData {
         path = Paths.get(FILE_PATH);
     }
 
+    //INYECTAR passwordEncoder
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    public WriteUserData(BCryptPasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
     public User createNewUser(String username, String password){
+        String hashPassword = passwordEncoder.encode(password); // PASSWORD_PLAIN_TEXT -> HASH + SALT
         try {
             // 1 Cargar archivo en memoria y leerlo
             String content = new String(Files.readAllBytes(path));
@@ -39,7 +52,7 @@ public class WriteUserData {
             JSONObject newUser = new JSONObject();
             newUser.put("id", newId);
             newUser.put("username", username);
-            newUser.put("password", password);
+            newUser.put("password", hashPassword);
 
             // 4. Agregar nuevo usuario al objeto Json Principal (userJson)
             usersJson.put(String.valueOf(newId), newUser);
@@ -88,6 +101,7 @@ public class WriteUserData {
     }
 
     public boolean changePassword(String username, String password){
+        String hashPassword = passwordEncoder.encode(password); // PASSWORD_PLAIN_TEXT -> HASH + SALT
         try {
             // 1 Cargar archivo en memoria y leerlo
             String content = new String(Files.readAllBytes(path));
@@ -101,7 +115,7 @@ public class WriteUserData {
 
                 String jsonUsername = obj.getString("username");
                 if (jsonUsername.equals(username)) {
-                    obj.put("password", password);
+                    obj.put("password", hashPassword);
                     break;
                 }
             }
