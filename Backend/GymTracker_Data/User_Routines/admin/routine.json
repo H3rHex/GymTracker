@@ -2,7 +2,11 @@
   "username" : "Carmiña",
   "isPublic" : false,
   "lunes" : {
-    "ejercicios" : [ ]
+    "ejercicios" : [ {
+      "nombre" : "PressBanca",
+      "series" : 12,
+      "repeticiones" : 123
+    } ]
   },
   "martes" : {
     "ejercicios" : [ {

@@ -1,22 +1,7 @@
 {
     "1": {
-        "password": "12",
-        "id": 1,
-        "username": "pep"
-    },
-    "2": {
-        "password": "12",
+        "password": "123",
         "id": 2,
         "username": "admin"
-    },
-    "3": {
-        "password": "12345",
-        "id": 3,
-        "username": "Carmiña"
-    },
-    "4": {
-        "password": "12345",
-        "id": 4,
-        "username": "EvaAntonio"
     }
 }

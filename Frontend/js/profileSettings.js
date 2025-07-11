@@ -262,7 +262,7 @@ async function changePassword() {
 
         if (changeRes.ok) {
             createBasicWindow("ÉXITO", "Contraseña actualizada correctamente.");
-            // localStorage.setItem("password", newPassword); // Consider if you truly want to store plaintext password
+            localStorage.setItem("password", newPassword); // Consider if you truly want to store plaintext password--
         } else {
             const errorData = await changeRes.json();
             throw new Error(errorData.message || "Hubo un error al cambiar la contraseña.");
