@@ -1,7 +1,7 @@
 package com.h3rhex.GymTracker.Services;
 
 import com.h3rhex.GymTracker.Config.FileManager;
-import com.h3rhex.GymTracker.Models.User;
+import com.h3rhex.GymTracker.DTOs.UserPublicDTO;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.Iterator;
+import java.util.UUID;
 
 @Component // Indica a Spring que esta clase es un componente y debe ser gestionada.
 public class WriteUserData {
@@ -21,16 +22,24 @@ public class WriteUserData {
         path = Paths.get(FILE_PATH);
     }
 
-    //INYECTAR passwordEncoder
     private final BCryptPasswordEncoder passwordEncoder;
+    private final ReadUserData readUserData;
 
     @Autowired
-    public WriteUserData(BCryptPasswordEncoder passwordEncoder) {
+    public WriteUserData(BCryptPasswordEncoder passwordEncoder, ReadUserData readUserData) {
         this.passwordEncoder = passwordEncoder;
+        this.readUserData = readUserData;
     }
 
-    public User createNewUser(String username, String password){
+    public UserPublicDTO createNewUser(String username, String password){
         String hashPassword = passwordEncoder.encode(password); // PASSWORD_PLAIN_TEXT -> HASH + SALT
+        // CREAMOS UN SESSION ID NUEVO
+        String notHassedSessionId = newSessionId();
+        while (readUserData.doesUserSessionIdExist(notHassedSessionId)){
+            notHassedSessionId = newSessionId();
+        }
+        String hassedId = passwordEncoder.encode(notHassedSessionId);
+
         try {
             // 1 Cargar archivo en memoria y leerlo
             String content = new String(Files.readAllBytes(path));
@@ -53,6 +62,7 @@ public class WriteUserData {
             newUser.put("id", newId);
             newUser.put("username", username);
             newUser.put("password", hashPassword);
+            newUser.put("sessionId", hassedId);
 
             // 4. Agregar nuevo usuario al objeto Json Principal (userJson)
             usersJson.put(String.valueOf(newId), newUser);
@@ -66,7 +76,7 @@ public class WriteUserData {
             Files.write(path, usersJson.toString(4).getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
 
             // 6. Devolver nuevo objeto user con los nuevos datos
-            return new User(newId, username, password);
+            return new UserPublicDTO(username, notHassedSessionId, "Usuario registrado correctamente");
 
         } catch (Exception e){
             System.err.println("Error creando usuario: " + e.getMessage());
@@ -89,6 +99,8 @@ public class WriteUserData {
                 String jsonUsername = obj.getString("username");
                 if (jsonUsername.equals(oldUsername)) {
                    obj.put("username", newUsername);
+                    // Cambiar el nombre de la carpeta de rutinas del usuario
+                    FileManager.ChangeUserRoutinesPersonalFolderName(oldUsername, newUsername);
                    break;
                 }
             }
@@ -174,5 +186,52 @@ public class WriteUserData {
             }
         }
         Files.delete(path);
+    }
+
+    private static String newSessionId(){
+        UUID uuid = UUID.randomUUID();
+        return uuid.toString();
+    }
+
+    public UserPublicDTO writeNewSessionId(String username){
+        String sessionId = newSessionId();
+        String hassedSessionId = passwordEncoder.encode(sessionId);
+
+        try {
+            String content = new String(Files.readAllBytes(path));
+            JSONObject usersJson = new JSONObject(content);
+
+            // Encontrar el User
+            boolean userFound = false; // Flag para saber si se encontró al usuario
+            Iterator<String> keys = usersJson.keys();
+            while (keys.hasNext()){
+                String key = keys.next();
+                JSONObject obj = usersJson.getJSONObject(key);
+
+                // Asegúrate de que el campo 'username' exista antes de intentar leerlo
+                if (obj.has("username") && obj.getString("username").equals(username)) {
+                    obj.put("sessionId", hassedSessionId);
+                    userFound = true;
+                    break;
+                }
+            }
+            if (!userFound) {
+                System.err.println("❌ Error: Usuario '" + username + "' no encontrado para asignar nueva sessionId.");
+                return null; // Si el usuario no se encontró, no podemos asignar sessionId
+            }
+
+            Files.write(path, usersJson.toString(4).getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+
+            // ESCRIBIR CAMBIOS
+            return new UserPublicDTO(
+                    username,
+                    sessionId,
+                    "Sesion iniciada correctamente"
+            );
+
+        } catch (Exception e){
+            System.err.println("Error asignando la nueva sessionId: " + e.getMessage());
+            return null;
+        }
     }
 }

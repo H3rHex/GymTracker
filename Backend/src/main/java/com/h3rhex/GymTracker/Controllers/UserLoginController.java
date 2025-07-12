@@ -1,17 +1,14 @@
 package com.h3rhex.GymTracker.Controllers;
 
-import com.h3rhex.GymTracker.DTOs.RegisterDTO;
-import com.h3rhex.GymTracker.DTOs.UsernameDTO;
-import com.h3rhex.GymTracker.DTOs.LoginDTO;
-import com.h3rhex.GymTracker.Models.User;
+import com.h3rhex.GymTracker.DTOs.*;
 import com.h3rhex.GymTracker.Services.ReadUserData;
 import com.h3rhex.GymTracker.Services.WriteUserData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 public class UserLoginController {
@@ -19,7 +16,7 @@ public class UserLoginController {
     private final WriteUserData writeUserData;
 
     @Autowired
-    public UserLoginController(ReadUserData readUserData, WriteUserData writeUserData) {
+    public UserLoginController(ReadUserData readUserData, WriteUserData writeUserData) { // ⬅️
         this.readUserData = readUserData;
         this.writeUserData = writeUserData;
     }
@@ -29,20 +26,74 @@ public class UserLoginController {
        y de serlo enviara una respuesta con el código 200, y indicando que es correcto, de lo contrario
        enviara un error
     */
+    @PostMapping("/user_login_form")
+    public ResponseEntity<UserPublicDTO> loginForm(@RequestBody LoginFormDTO loginFormDTO){
+        String username = loginFormDTO.getUsername();
+        String password = loginFormDTO.getPassword();
+
+        // COMPROBAR CREDENCIALES
+        try{
+            boolean isLoginCorrect = readUserData.findUserByCredentials(username, password);
+            // Comprobar si es correcto
+            if(!isLoginCorrect){
+//                System.out.println("Credenciales incorrectas");
+                return ResponseEntity.badRequest().body(new UserPublicDTO(
+                        username,
+                        null,
+                        "Credenciales incorrectas para el usuario: " + username
+                ));
+            }
+//            System.out.println("Credenciales correctas");
+
+            // CONTINUAMOS SI LAS CREDENCIALES SON CORRECTAS
+
+            // Declaramos él un UserPublicDto, para preparar el mensaje para el frontend creando la nueva sessionId
+            UserPublicDTO userPublicDTO = writeUserData.writeNewSessionId(username);
+            if(userPublicDTO != null){
+//                System.out.println("Todo correcto");
+                return ResponseEntity.ok(new UserPublicDTO(
+                        userPublicDTO.getUsername(),
+                        userPublicDTO.getSessionId(),
+                        userPublicDTO.getMessage()
+                ));
+            } else {
+                return ResponseEntity.internalServerError().body(new UserPublicDTO(
+                        null,
+                        null,
+                        "Error durante la verificación de credenciales"
+                ));
+            }
+        } catch (Exception e) {
+            // System.err.println("Error: " + e);
+            return ResponseEntity.internalServerError().body(new UserPublicDTO(
+                    null,
+                    null,
+                    "Error durante la verificación de credenciales"
+            ));
+        }
+    }
+
     @PostMapping("/user_login")
-    public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO){
-        String username = loginDTO.getUsername();
-        String password = loginDTO.getPassword();
+    public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) {
+        String sessionId = loginDTO.getSessionId();
 
-        User user = readUserData.findUserByCredentials(username, password);
+        // COMPROBAR CREDENCIALES
+        try {
+            boolean isLoginCorrect = readUserData.findUserBySessionId(sessionId);
+            if (!isLoginCorrect) {
+                // System.out.println("Credenciales incorrectas");
+                return ResponseEntity.badRequest().body("Session ID incorrecto: " + sessionId);
+            }
+            // System.out.println("Credenciales correctas");
 
-        if (user != null) {
-            //System.out.println("✅ Login exitoso para el usuario: " + user.getUsername());
-            return ResponseEntity.ok("Login correcto. Bienvenido " + user.getUsername());
-        } else {
-            System.out.println("❌ Login fallido. Credenciales inválidas para usuario: " + username);
-            // Estaría bien añadir si el usuario existe o no
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
+            // CONTINUAMOS SI LAS CREDENCIALES SON CORRECTAS
+            return ResponseEntity.ok("Session ID verificado correctamente: " + sessionId);
+
+        } catch (Exception e) {
+            // System.err.println("Error: " + e);
+            return ResponseEntity.internalServerError().body(
+                    "Error durante la verificación de credenciales"
+            );
         }
     }
 
@@ -54,19 +105,27 @@ public class UserLoginController {
     */
 
     @PostMapping("/user_registration")
-    public ResponseEntity<String> registUser(@RequestBody RegisterDTO registerDTO){
-        String username = registerDTO.getUsername();
-        String password = registerDTO.getPassword();
+    public ResponseEntity<UserPublicDTO> registUser(@RequestBody RegisterDTO registerDTO){
+        String username = registerDTO.getUsername(); // Obtenemos el username del DTO de ENTRADA
+        String password = registerDTO.getPassword(); // Obtenemos el password del DTO de ENTRADA
 
-        User user = writeUserData.createNewUser(username, password);
+        UserPublicDTO userPublicDTO = writeUserData.createNewUser(username, password);
 
-        if (user != null) {
-            System.out.println("✅ Registro exitoso para el usuario: " + username);
-            return ResponseEntity.ok("Usuario registrado correctamente");
+        if (userPublicDTO != null) {
+            //System.out.println("✅ Registro exitoso para el usuario: " + username);
+            return ResponseEntity.ok(new UserPublicDTO (
+                    userPublicDTO.getUsername(),
+                    userPublicDTO.getSessionId(),
+                    userPublicDTO.getMessage()
+            ));
 
         } else {
             System.out.println("❌ Error al registrar usuario: " + username);
-            return ResponseEntity.badRequest().body("Error creando el usuario");
+            return ResponseEntity.badRequest().body(new UserPublicDTO(
+                    null,
+                    null,
+                    "Error creando el usuario"
+            ));
         }
     }
 

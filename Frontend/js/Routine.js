@@ -9,15 +9,14 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCarouselDisplay();
 
 
-    if (!localStorage.getItem("routineEditingMode")) {
-        localStorage.setItem("routineEditingMode", false);
-        localStorage.setItem("routineIsPublic", false);
+    if (!sessionStorage.getItem("routineEditingMode")) {
+        sessionStorage.setItem("routineEditingMode", false);
     } else {
-        localStorage.setItem("routineEditingMode", false);
+        sessionStorage.setItem("routineEditingMode", false);
     }
 
-    if (!localStorage.getItem("carruselIndex")) {
-        localStorage.setItem("carruselIndex", 0);
+    if (!sessionStorage.getItem("carruselIndex")) {
+        sessionStorage.setItem("carruselIndex", 0);
     }
 
     const editCalendarBtn = document.getElementById("editModeCalendarBtn");

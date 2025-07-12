@@ -10,15 +10,25 @@
 	</parent>
 	<groupId>com.h3rhex</groupId>
 	<artifactId>GymTracker</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>pre-1.0.0-alpha</version>
 	<name>GymTracker</name>
 	<description>Personal GymTracker by H3rHex</description>
-	<url/>
+	<url>https://github.com/H3rHex</url>
 	<licenses>
 		<license/>
 	</licenses>
 	<developers>
-		<developer/>
+		<developer>
+			<id>h3rhex</id>
+			<name>H3rHex</name>
+			 <url>https://github.com/H3rHex</url>
+			<organization>Independent</organization>
+			<roles>
+				<role>Developer</role>
+				<role>Architect</role>
+			</roles>
+			<timezone>+2</timezone>
+		</developer>
 	</developers>
 	<scm>
 		<connection/>

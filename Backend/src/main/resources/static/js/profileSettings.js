@@ -1,5 +1,5 @@
 // IMPORTS
-import { checkLogin } from "/js/Home.js";
+import { autoLogin } from "/js/handleUserForms.js";
 import { createBasicWindow } from "/js/ModalWindows/BasicWindow.js";
 import { createConfirmWindow } from "/js/ModalWindows/ConfirmWindow.js";
 import { createDataWindow } from "/js/ModalWindows/DataWindow.js";
@@ -44,7 +44,7 @@ async function delete_account() {
 
     // Verificar credenciales
     try {
-        const loginRes = await fetch("/user_login", {
+        const loginRes = await fetch("/user_login_form", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ "username": username, "password": password })
@@ -119,7 +119,7 @@ async function changeUsername() {
 
     // Verificar credenciales
     try {
-        const loginRes = await fetch("/user_login", {
+        const loginRes = await fetch("/user_login_form", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -223,7 +223,7 @@ async function changePassword() {
 
     // Verificar credenciales
     try {
-        const loginRes = await fetch("/user_login", {
+        const loginRes = await fetch("/user_login_form", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ "username": username, "password": password })
@@ -260,20 +260,13 @@ async function changePassword() {
             body: JSON.stringify({ "username": username, "newPassword": newPassword })
         });
 
-        if (changeRes.ok) {
-            createBasicWindow("ÉXITO", "Contraseña actualizada correctamente.");
-            localStorage.setItem("password", newPassword); // Consider if you truly want to store plaintext password--
-        } else {
-            const errorData = await changeRes.json();
-            throw new Error(errorData.message || "Hubo un error al cambiar la contraseña.");
-        }
     } catch (err) {
         createBasicWindow("ERROR", err.message);
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    checkLogin();
+    autoLogin();
 
     const deleteAccountBtn = document.getElementById('deleteAccount');
     const changePasswordBtn = document.getElementById('changePassword');

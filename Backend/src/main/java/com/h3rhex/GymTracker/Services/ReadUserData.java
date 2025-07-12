@@ -1,8 +1,6 @@
 package com.h3rhex.GymTracker.Services;
 
 import com.h3rhex.GymTracker.Config.FileManager;
-import com.h3rhex.GymTracker.Config.SecurityConfig;
-import com.h3rhex.GymTracker.Models.User;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired; // Necesario para la inyección
@@ -34,7 +32,7 @@ public class ReadUserData {
     }
 
     // Buscar usuario y compararlo
-    public User findUserByCredentials(String username, String password) {
+    public boolean findUserByCredentials(String username, String password) {
         try {
             String content = new String(Files.readAllBytes(path));
             JSONObject usersJson = new JSONObject(content);
@@ -48,15 +46,40 @@ public class ReadUserData {
                 String jsonPassword = obj.getString("password"); // LA CONTRASEÑA ESTA ALMACENADA COMO UN HASH
 
                 if (jsonUsername.equals(username) && passwordEncoder.matches(password, jsonPassword)) {
+
                     int id = obj.getInt("id");
-                    return new User(id ,jsonUsername, jsonPassword);
+                    return true;
                 }
             }
 
         } catch (Exception e){
             System.err.println("❌ Error leyendo el archivo: " + e.getMessage());
+            return  false;
         }
-        return null;
+        return false;
+    }
+
+    public boolean findUserBySessionId(String sessionId) {
+        try {
+            String content = new String(Files.readAllBytes(path));
+            JSONObject usersJson = new JSONObject(content);
+
+            Iterator<String> keys = usersJson.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                JSONObject obj = usersJson.getJSONObject(key);
+
+                String jsonSessionId = obj.getString("sessionId");
+
+                if (passwordEncoder.matches(sessionId, jsonSessionId)) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            System.err.println("❌ Error leyendo el archivo: " + e.getMessage());
+            return false;
+        }
     }
 
     public boolean doesUsernameExist(String username) {
@@ -77,6 +100,29 @@ public class ReadUserData {
             }
             return false;
         } catch (Exception e) {
+            System.err.println("❌ Error leyendo el archivo: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean doesUserSessionIdExist(String sessionId){
+        try {
+            String content = new String(Files.readAllBytes(path));
+            JSONObject usersJson = new JSONObject(content);
+
+            Iterator<String> keys = usersJson.keys();
+            while (keys.hasNext()){
+                String key = keys.next();
+                JSONObject obj = usersJson.getJSONObject(key);
+
+                String jsonSessionId = obj.getString("sessionId");
+                if(passwordEncoder.matches(sessionId, jsonSessionId)){
+                    return true;
+                }
+            }
+
+            return false;
+        } catch (Exception e){
             System.err.println("❌ Error leyendo el archivo: " + e.getMessage());
             return false;
         }

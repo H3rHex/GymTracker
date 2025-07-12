@@ -82,4 +82,23 @@ public class FileManager {
 
         return userRoutinesFolder.getAbsolutePath();
     }
+
+    public static String ChangeUserRoutinesPersonalFolderName(String oldUsername, String newUsername) {
+        String oldFolderPath = UserRoutinesPersonalFolder(oldUsername);
+        if (oldFolderPath == null) {
+            System.err.println("❌ No se encontró la carpeta de rutinas del usuario: " + oldUsername);
+            return null;
+        }
+
+        File oldFolder = new File(oldFolderPath);
+        File newFolder = new File(oldFolder.getParent(), newUsername);
+
+        if (oldFolder.renameTo(newFolder)) {
+            System.out.println("✅ Carpeta renombrada de " + oldUsername + " a " + newUsername);
+            return newFolder.getAbsolutePath();
+        } else {
+            System.err.println("❌ Error al renombrar la carpeta de rutinas del usuario: " + oldUsername);
+            return null;
+        }
+    }
 }

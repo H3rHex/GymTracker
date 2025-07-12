@@ -1,11 +1,11 @@
+
 //Variables globales
 var username = localStorage.getItem("username");
-var password = localStorage.getItem("password");
 var dayMessageElement = document.getElementById("dayMessage");
 var userNameSpan = document.getElementById("usernameSpan");
 
 // IMPORTS NECESARIOS
-import { createBasicWindow } from "/js/ModalWindows/BasicWindow.js";
+import { autoLogin } from "/js/handleUserForms.js";
 import { close_Sesion } from "/js/profileSettings.js";
 
 
@@ -64,11 +64,26 @@ const motivational_message_list = [
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
-    checkLogin(); // Verica mediante una peticion al servidor que todo este  (por si acaso)
+    autoLogin();
     wellcome();
+
+    const closeSessionButton = document.getElementById("closeSesion");
+    if (closeSessionButton) {
+        closeSessionButton.addEventListener("click", () => {
+            close_Sesion();
+        });
+    }
+
 });
 
 function wellcome() {
+    username = localStorage.getItem("username");
+
+    if (!username || username === "null" || username.trim() === "") {
+        console.warn("No hay usuario logueado. No se puede mostrar el mensaje de bienvenida.");
+        return;
+    }
+
     if (userNameSpan) {
         userNameSpan.innerHTML = username; // Asigna el valor de username al contenido HTML
     }
@@ -99,31 +114,4 @@ function showMessageWithTypingEffect() {
             showMessageWithTypingEffect();
         }, 5000); // espera 5 segundos antes de mostrar el próximo mensaje
     });
-}
-
-
-// PETICION AL SERVIDOR CON CREDENCIALES
-export async function checkLogin() {
-    try {
-        const response = await fetch("/user_login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ username, password })
-        });
-
-        if (response.status === 200) {
-            return;
-        } else {
-            // Redirigir a otra página
-            await createBasicWindow("SESIÓN EXPIRADA", "Tu sesión ha expirado o no has iniciado sesión. Por favor, vuelve a iniciar sesión.");
-            window.location.href = '/'; // Redirige después de que el usuario cierre la ventana modal
-        }
-    } catch (error) {
-        console.error('❌ Error de conexión:', error.message);
-        await createBasicWindow("ERROR DE CONEXIÓN", "No se pudo conectar con el servidor para verificar la sesión: " + error.message);
-        // Opcional: Podrías redirigir aquí también si la conexión es crítica
-        window.location.href = '/';
-    }
 }
